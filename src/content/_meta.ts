@@ -4,5 +4,5 @@ export default {
   use: 'Use Cases',
   beginners: 'Beginners Guide',
   developers: 'Developers',
-  learn: 'Learn More'
+  learn: 'Learn More',
 }

@@ -1,14 +1,17 @@
 ---
 title: OpenRPC Getting Started Guide | A guide through OpenRPC
 ---
+
 # Getting Started
 
 A guide through OpenRPC.
 
 ## Introduction
+
 This field guide will help developers on their OpenRPC journey to code automation and tooling. It is meant to be a starting place for new users and a resource for existing users.
 
 ### What is JSON-RPC?
+
 [JSON-RPC](https://www.jsonrpc.org/specification) is a light-weight remote procedure call (RPC) protocol.
 
 It is transport agnostic in that the concepts can be used within the same process, over sockets, over http, websockets, or in many various message passing environments.
@@ -22,9 +25,7 @@ It uses the JSON data-interchange format. JSON is easy for humans to read and wr
   "id": 1,
   "jsonrpc": "2.0",
   "method": "list_pets",
-  "params": [
-    1
-  ]
+  "params": [1]
 }
 ```
 
@@ -104,6 +105,7 @@ The OpenRPC Specification does not mandate a specific development process such a
 ```
 
 ### Diving deeper with `ExamplePairings`
+
 Adding `examples[]` to the `listPets` method will help users and machines get an idea of what an example request params/result data pairing will look like.
 
 Here the example JSON-RPC request above is used to provide example data:
@@ -134,6 +136,7 @@ Here the example JSON-RPC request above is used to provide example data:
 ```
 
 ##### All Together now
+
 ```json
 {
   "openrpc": "1.2.1",
