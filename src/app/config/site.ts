@@ -60,6 +60,13 @@ export const siteConfig = {
   ],
   sponsors: [
     // Placeholder data - replace with actual sponsors
+    /*
+    {
+      name: 'Ethereum Foundation',
+      logo: '/assets/sponsors/ethereum-wordmark.svg',
+      url: 'https://ethereum.org/',
+      tier: 'platinum' as const,
+    },
     {
       name: 'Ethereum Foundation',
       logo: '/assets/sponsors/ethereum-wordmark.svg',
@@ -77,7 +84,7 @@ export const siteConfig = {
       logo: '/assets/sponsors/quick-node-horizontal-color.svg',
       url: 'https://www.quicknode.com/',
       tier: 'gold' as const,
-    },
+    },*/
     {
       name: 'Sponsor 4',
       logo: '/assets/sponsors/placeholder-sponsor.svg',
@@ -95,7 +102,7 @@ export const siteConfig = {
       logo: '/assets/sponsors/placeholder-sponsor.svg',
       url: '#',
       tier: 'bronze' as const,
-    },
+    }
   ],
 };
 
