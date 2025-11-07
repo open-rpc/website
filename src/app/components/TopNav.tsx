@@ -7,7 +7,7 @@ import { useState } from 'react';
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Docs', href: '/docs' },
-  { name: 'Playground', href: '/playground' },
+  { name: 'Playground', href: 'https://playground.open-rpc.org' },
   { name: 'GitHub', href: 'https://github.com/open-rpc', external: true },
   { name: 'Twitter', href: 'https://twitter.com/open_rpc', external: true },
   { name: 'Discord', href: 'https://discord.gg/gREUKnkT7C', external: true },
@@ -23,11 +23,13 @@ export function TopNav() {
         <div className="flex justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
+
             <Link href="/" className="flex items-center space-x-2">
-              {/* Placeholder for logo image */}
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">OR</span>
-              </div>
+              <img 
+                src="/assets/icons/open-rpc-icon-256x256.png" 
+                alt="OpenRPC" 
+                className="w-8 h-8"
+              />
               <span className="font-bold text-lg hidden sm:block">Open-RPC</span>
             </Link>
           </div>

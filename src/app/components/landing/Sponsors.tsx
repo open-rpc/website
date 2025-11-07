@@ -15,7 +15,7 @@ export function Sponsors() {
             Our Sponsors
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-            Open-RPC is made possible by these amazing sponsors
+            OpenRPC is made possible by these amazing sponsors
           </p>
           <a
             href="https://github.com/sponsors/open-rpc"

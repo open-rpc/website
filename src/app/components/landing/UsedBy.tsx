@@ -11,7 +11,7 @@ export function UsedBy() {
             Trusted By
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400">
-            Open-RPC is used by companies worldwide
+            OpenRPC is used by companies worldwide
           </p>
         </div>
 

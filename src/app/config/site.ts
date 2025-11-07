@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: 'Open-RPC',
+  name: 'OpenRPC',
   description:
     'A standard, programming language-agnostic interface description for JSON-RPC 2.0 APIs',
   tagline: 'The OpenAPI for JSON-RPC',

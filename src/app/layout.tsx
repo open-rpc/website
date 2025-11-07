@@ -5,7 +5,7 @@ import 'nextra-theme-docs/style.css';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Open-RPC',
+  title: 'OpenRPC',
   description: 'A standard, programming language-agnostic interface description for JSON-RPC 2.0 APIs',
 };
 
@@ -13,10 +13,12 @@ const navbar = (
   <Navbar
     logo={
       <div className="flex items-center space-x-2">
-        <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-          <span className="text-white font-bold text-sm">OR</span>
-        </div>
-        <span className="font-bold text-lg">Open-RPC</span>
+        <img 
+          src="/assets/icons/open-rpc-icon-256x256.png" 
+          alt="OpenRPC" 
+          className="w-8 h-8"
+        />
+        <span className="font-bold text-lg">OpenRPC</span>
       </div>
     }
     logoLink="/"
@@ -60,7 +62,7 @@ const navbar = (
   </Navbar>
 );
 
-const footer = <Footer>Apache License 2.0 {new Date().getFullYear()} © Open-RPC.</Footer>;
+const footer = <Footer>Apache License 2.0 {new Date().getFullYear()} © OpenRPC.</Footer>;
 
 export default async function RootLayout({
   children,
