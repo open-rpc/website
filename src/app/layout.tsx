@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Footer, Layout, Navbar } from 'nextra-theme-docs';
 import { getPageMap } from 'nextra/page-map';
+import { Analytics } from "@vercel/analytics/next"
 import 'nextra-theme-docs/style.css';
 import './globals.css';
 
@@ -80,6 +81,7 @@ export default async function RootLayout({
         >
           {children}
         </Layout>
+        <Analytics />
       </body>
     </html>
   );
