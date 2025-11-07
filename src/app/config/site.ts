@@ -1,3 +1,5 @@
+type SponsorTier = 'platinum' | 'gold' | 'silver' | 'bronze';
+
 export const siteConfig = {
   name: 'OpenRPC',
   description:
@@ -89,19 +91,19 @@ export const siteConfig = {
       name: 'Sponsor 4',
       logo: '/assets/sponsors/placeholder-sponsor.svg',
       url: '#',
-      tier: 'bronze' as const,
+      tier: 'bronze' as SponsorTier,
     },
     {
       name: 'Sponsor 5',
       logo: '/assets/sponsors/placeholder-sponsor.svg',
       url: '#',
-      tier: 'bronze' as const,
+      tier: 'bronze' as SponsorTier,
     },
     {
       name: 'Sponsor 6',
       logo: '/assets/sponsors/placeholder-sponsor.svg',
       url: '#',
-      tier: 'bronze' as const,
+      tier: 'bronze' as SponsorTier,
     }
   ],
 };
