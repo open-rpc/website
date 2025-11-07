@@ -15,10 +15,16 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light) {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+}
+
+/* Manual dark mode toggle via .dark class (used by next-themes) */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 body {
@@ -35,4 +41,18 @@ html {
 /* Ensure proper spacing below TopNav */
 main {
   min-height: calc(100vh - var(--nav-height));
+}
+
+/* Fix search bar text colors in dark mode */
+.dark .nextra-search input,
+.dark [cmdk-input] {
+  color: #ededed;
+}
+
+.dark [cmdk-item] {
+  color: #ededed;
+}
+
+.dark [cmdk-group-heading] {
+  color: #9ca3af;
 }
