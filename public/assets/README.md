@@ -1,18 +1,22 @@
 # Assets Directory
 
-This directory contains static assets for the Open-RPC website.
+This directory contains static assets for the OpenRPC website.
 
 ## Directory Structure
 
 ### `/logos`
+
 Company logos for the "Used By" section on the landing page.
+
 - Format: SVG or PNG (recommended)
 - Size: 120x60px (or proportional)
 - Style: Should work on both light and dark backgrounds
 - Naming: Use kebab-case, e.g., `company-name.svg`
 
 ### `/sponsors`
+
 Sponsor logos displayed in the sponsors section.
+
 - Format: SVG or PNG (recommended)
 - Sizes:
   - Gold: 192x96px
@@ -22,7 +26,9 @@ Sponsor logos displayed in the sponsors section.
 - Naming: Use kebab-case, e.g., `sponsor-name.svg`
 
 ### `/icons`
+
 Feature icons and other UI elements.
+
 - Format: SVG (preferred)
 - Size: 48x48px (or scalable)
 - Style: Should support dark mode
@@ -37,6 +43,7 @@ To add a new logo or asset:
 3. Reference using the path `/assets/{category}/{filename}`
 
 Example:
+
 ```typescript
 {
   name: 'Company Name',
@@ -52,4 +59,3 @@ Example:
 - Ensure logos are readable at small sizes
 - Test in both light and dark modes
 - Keep file sizes reasonable (< 50KB per logo)
-
