@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="500" height="120" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Minecraft">
+  <title>Minecraft</title>
+  <defs>
+    <style>
+      .minecraft-letter {
+        fill: #3C3C3C;
+        stroke: #1A1A1A;
+        stroke-width: 2;
+      }
+      .minecraft-highlight {
+        fill: #6B6B6B;
+      }
+      .minecraft-shadow {
+        fill: #2A2A2A;
+      }
+    </style>
+  </defs>
+  
+  <!-- M -->
+  <g>
+    <!-- Left stem -->
+    <rect class="minecraft-shadow" x="4" y="34" width="14" height="56"/>
+    <rect class="minecraft-letter" x="2" y="32" width="14" height="56"/>
+    <rect class="minecraft-highlight" x="2" y="32" width="14" height="6"/>
+
+    <!-- Stepped diagonals to form a clear blocky 'M' valley -->
+    <!-- Left-to-center diagonal -->
+    <rect class="minecraft-shadow" x="18" y="46" width="12" height="12"/>
+    <rect class="minecraft-letter" x="16" y="44" width="12" height="12"/>
+    <rect class="minecraft-highlight" x="16" y="44" width="12" height="4"/>
+
+    <rect class="minecraft-shadow" x="26" y="58" width="12" height="12"/>
+    <rect class="minecraft-letter" x="24" y="56" width="12" height="12"/>
+    <rect class="minecraft-highlight" x="24" y="56" width="12" height="4"/>
+
+    <rect class="minecraft-shadow" x="34" y="70" width="12" height="12"/>
+    <rect class="minecraft-letter" x="32" y="68" width="12" height="12"/>
+    <rect class="minecraft-highlight" x="32" y="68" width="12" height="4"/>
+
+    <!-- Right-to-center diagonal -->
+    <rect class="minecraft-shadow" x="34" y="50" width="12" height="12"/>
+    <rect class="minecraft-letter" x="32" y="48" width="12" height="12"/>
+    <rect class="minecraft-highlight" x="32" y="48" width="12" height="4"/>
+
+    <rect class="minecraft-shadow" x="26" y="62" width="12" height="12"/>
+    <rect class="minecraft-letter" x="24" y="60" width="12" height="12"/>
+    <rect class="minecraft-highlight" x="24" y="60" width="12" height="4"/>
+
+    <!-- Right stem -->
+    <rect class="minecraft-shadow" x="46" y="34" width="14" height="56"/>
+    <rect class="minecraft-letter" x="44" y="32" width="14" height="56"/>
+    <rect class="minecraft-highlight" x="44" y="32" width="14" height="6"/>
+  </g>
+  
+  <!-- I -->
+  <g>
+    <rect class="minecraft-shadow" x="72" y="34" width="14" height="56"/>
+    <rect class="minecraft-letter" x="70" y="32" width="14" height="56"/>
+    <rect class="minecraft-highlight" x="70" y="32" width="14" height="6"/>
+  </g>
+  
+  <!-- N -->
+  <g>
+    <!-- Left stem -->
+    <rect class="minecraft-shadow" x="98" y="34" width="14" height="56"/>
+    <rect class="minecraft-letter" x="96" y="32" width="14" height="56"/>
+    <rect class="minecraft-highlight" x="96" y="32" width="14" height="6"/>
+
+    <!-- Clear stepped diagonal from top-left to bottom-right -->
+    <rect class="minecraft-shadow" x="112" y="34" width="12" height="12"/>
+    <rect class="minecraft-letter" x="110" y="32" width="12" height="12"/>
+    <rect class="minecraft-highlight" x="110" y="32" width="12" height="4"/>
+
+    <rect class="minecraft-shadow" x="120" y="46" width="12" height="12"/>
+    <rect class="minecraft-letter" x="118" y="44" width="12" height="12"/>
+    <rect class="minecraft-highlight" x="118" y="44" width="12" height="4"/>
+
+    <rect class="minecraft-shadow" x="128" y="58" width="12" height="12"/>
+    <rect class="minecraft-letter" x="126" y="56" width="12" height="12"/>
+    <rect class="minecraft-highlight" x="126" y="56" width="12" height="4"/>
+
+    <!-- Right stem -->
+    <rect class="minecraft-shadow" x="126" y="34" width="14" height="56"/>
+    <rect class="minecraft-letter" x="124" y="32" width="14" height="56"/>
+    <rect class="minecraft-highlight" x="124" y="32" width="14" height="6"/>
+  </g>
+  
+  <!-- E -->
+  <g>
+    <rect class="minecraft-shadow" x="152" y="34" width="14" height="56"/>
+    <rect class="minecraft-letter" x="150" y="32" width="14" height="56"/>
+    <rect class="minecraft-highlight" x="150" y="32" width="14" height="6"/>
+    
+    <rect class="minecraft-shadow" x="166" y="34" width="20" height="12"/>
+    <rect class="minecraft-letter" x="164" y="32" width="20" height="12"/>
+    <rect class="minecraft-highlight" x="164" y="32" width="20" height="4"/>
+    
+    <rect class="minecraft-shadow" x="166" y="56" width="18" height="10"/>
+    <rect class="minecraft-letter" x="164" y="54" width="18" height="10"/>
+    
+    <rect class="minecraft-shadow" x="166" y="78" width="20" height="12"/>
+    <rect class="minecraft-letter" x="164" y="76" width="20" height="12"/>
+  </g>
+  
+  <!-- C -->
+  <g>
+    <rect class="minecraft-shadow" x="198" y="34" width="14" height="56"/>
+    <rect class="minecraft-letter" x="196" y="32" width="14" height="56"/>
+    <rect class="minecraft-highlight" x="196" y="32" width="14" height="6"/>
+    
+    <rect class="minecraft-shadow" x="212" y="34" width="20" height="12"/>
+    <rect class="minecraft-letter" x="210" y="32" width="20" height="12"/>
+    <rect class="minecraft-highlight" x="210" y="32" width="20" height="4"/>
+    
+    <rect class="minecraft-shadow" x="212" y="78" width="20" height="12"/>
+    <rect class="minecraft-letter" x="210" y="76" width="20" height="12"/>
+  </g>
+  
+  <!-- R -->
+  <g>
+    <rect class="minecraft-shadow" x="244" y="34" width="14" height="56"/>
+    <rect class="minecraft-letter" x="242" y="32" width="14" height="56"/>
+    <rect class="minecraft-highlight" x="242" y="32" width="14" height="6"/>
+    
+    <rect class="minecraft-shadow" x="258" y="34" width="18" height="12"/>
+    <rect class="minecraft-letter" x="256" y="32" width="18" height="12"/>
+    <rect class="minecraft-highlight" x="256" y="32" width="18" height="4"/>
+    
+    <rect class="minecraft-shadow" x="276" y="46" width="12" height="10"/>
+    <rect class="minecraft-letter" x="274" y="44" width="12" height="10"/>
+    
+    <rect class="minecraft-shadow" x="258" y="56" width="18" height="10"/>
+    <rect class="minecraft-letter" x="256" y="54" width="18" height="10"/>
+    
+    <rect class="minecraft-shadow" x="270" y="68" width="12" height="10"/>
+    <rect class="minecraft-letter" x="268" y="66" width="12" height="10"/>
+    
+    <rect class="minecraft-shadow" x="282" y="78" width="12" height="12"/>
+    <rect class="minecraft-letter" x="280" y="76" width="12" height="12"/>
+  </g>
+  
+  <!-- A -->
+  <g>
+    <rect class="minecraft-shadow" x="308" y="34" width="14" height="56"/>
+    <rect class="minecraft-letter" x="306" y="32" width="14" height="56"/>
+    <rect class="minecraft-highlight" x="306" y="32" width="14" height="6"/>
+    
+    <rect class="minecraft-shadow" x="322" y="34" width="18" height="12"/>
+    <rect class="minecraft-letter" x="320" y="32" width="18" height="12"/>
+    <rect class="minecraft-highlight" x="320" y="32" width="18" height="4"/>
+    
+    <rect class="minecraft-shadow" x="322" y="56" width="18" height="10"/>
+    <rect class="minecraft-letter" x="320" y="54" width="18" height="10"/>
+    
+    <rect class="minecraft-shadow" x="342" y="34" width="14" height="56"/>
+    <rect class="minecraft-letter" x="340" y="32" width="14" height="56"/>
+    <rect class="minecraft-highlight" x="340" y="32" width="14" height="6"/>
+  </g>
+  
+  <!-- F -->
+  <g>
+    <rect class="minecraft-shadow" x="368" y="34" width="14" height="56"/>
+    <rect class="minecraft-letter" x="366" y="32" width="14" height="56"/>
+    <rect class="minecraft-highlight" x="366" y="32" width="14" height="6"/>
+    
+    <rect class="minecraft-shadow" x="382" y="34" width="20" height="12"/>
+    <rect class="minecraft-letter" x="380" y="32" width="20" height="12"/>
+    <rect class="minecraft-highlight" x="380" y="32" width="20" height="4"/>
+    
+    <rect class="minecraft-shadow" x="382" y="56" width="18" height="10"/>
+    <rect class="minecraft-letter" x="380" y="54" width="18" height="10"/>
+  </g>
+  
+  <!-- T -->
+  <g>
+    <rect class="minecraft-shadow" x="414" y="34" width="30" height="12"/>
+    <rect class="minecraft-letter" x="412" y="32" width="30" height="12"/>
+    <rect class="minecraft-highlight" x="412" y="32" width="30" height="4"/>
+    
+    <rect class="minecraft-shadow" x="422" y="46" width="14" height="44"/>
+    <rect class="minecraft-letter" x="420" y="44" width="14" height="44"/>
+  </g>
+</svg>

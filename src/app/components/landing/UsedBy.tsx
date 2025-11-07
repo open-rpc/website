@@ -11,33 +11,30 @@ export function UsedBy() {
             Trusted By
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400">
-            OpenRPC is used by companies worldwide
+            OpenRPC is used by companies and foundations worldwide
           </p>
         </div>
 
         {/* Logo Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
           {siteConfig.usedBy.map((company, index) => (
-            <div
+            <a
               key={index}
-              className="flex items-center justify-center p-4 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100"
+              href={company.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center p-4 grayscale hover:grayscale-0 transition-all opacity-80 hover:opacity-100"
             >
-              {/* Placeholder for company logo */}
-              <div className="w-full h-16 bg-gray-200 dark:bg-gray-800 rounded flex items-center justify-center">
-                <span className="text-xs text-gray-500 dark:text-gray-500 font-medium">
-                  {company.name}
-                </span>
-              </div>
-              {/* When you have actual logos, replace the above div with:
+              <div className="relative w-48 h-24 flex items-center justify-center">
               <Image
                 src={company.logo}
                 alt={company.name}
-                width={120}
-                height={60}
-                className="object-contain"
-              />
-              */}
-            </div>
+                  fill
+                  className="object-contain"
+                  sizes="192px"
+                />
+              </div>
+            </a>
           ))}
         </div>
       </div>
