@@ -2,10 +2,12 @@
 
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
+import type { ExtraProps } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useTheme } from 'next-themes';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import atomDark from 'react-syntax-highlighter/dist/esm/styles/prism/atom-dark';
+import type { ComponentPropsWithoutRef } from 'react';
 import { Button } from '../ui/Button';
 
 interface HeroContentProps {
@@ -16,6 +18,11 @@ interface HeroContentProps {
   playgroundUrl: string;
   githubUrl: string;
 }
+
+type MarkdownCodeProps = ComponentPropsWithoutRef<'code'> &
+  ExtraProps & {
+    inline?: boolean;
+  };
 
 export function HeroContent({
   schemaMarkdown,
@@ -79,7 +86,14 @@ export function HeroContent({
                 remarkPlugins={[remarkGfm]}
                 components={{
                   pre: ({ children }) => <>{children}</>,
-                  code({ inline, className, children, ...codeProps }) {
+                  code(codeProps) {
+                    const {
+                      inline,
+                      className,
+                      children,
+                      node: _node,
+                      ...rest
+                    } = codeProps as MarkdownCodeProps;
                     const match = /language-(\w+)/.exec(className || '');
                     if (!inline && match) {
                       return (
@@ -104,7 +118,7 @@ export function HeroContent({
                       );
                     }
                     return (
-                      <code className={className} {...codeProps}>
+                      <code className={className} {...rest}>
                         {children}
                       </code>
                     );
