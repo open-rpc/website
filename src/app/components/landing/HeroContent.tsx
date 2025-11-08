@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import type { ExtraProps } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { useTheme } from 'next-themes';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import atomDark from 'react-syntax-highlighter/dist/esm/styles/prism/atom-dark';
 import type { ComponentPropsWithoutRef } from 'react';
@@ -32,14 +31,10 @@ export function HeroContent({
   playgroundUrl,
   githubUrl,
 }: HeroContentProps) {
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === 'dark';
   const codeTheme = atomDark;
-  const headingTextClass = isDark ? 'text-white' : 'text-slate-900';
-  const bodyTextClass = isDark ? 'text-gray-300' : 'text-slate-600';
 
   return (
-    <section className={`bg-gradient-to-b ${isDark ? 'from-slate-950 via-slate-900 to-black' : 'from-white via-slate-50 to-blue-50'} px-4 py-20 sm:px-6 lg:py-28`}>
+    <section className="hero-section px-4 py-20 sm:px-6 lg:py-28">
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-12 text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -47,10 +42,10 @@ export function HeroContent({
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="space-y-8"
         >
-          <h1 className={`text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl ${headingTextClass}`}>
+          <h1 className="hero-heading text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
             {tagline}
           </h1>
-          <p className={`mx-auto max-w-3xl text-lg leading-relaxed ${bodyTextClass}`}>
+          <p className="hero-body mx-auto max-w-3xl text-lg leading-relaxed">
             {description}
           </p>
 
