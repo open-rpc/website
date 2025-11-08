@@ -3,8 +3,8 @@ type SponsorTier = 'platinum' | 'gold' | 'silver' | 'bronze';
 export const siteConfig = {
   name: 'OpenRPC',
   description:
-    'A standard, programming language-agnostic interface description for JSON-RPC 2.0 APIs',
-  tagline: 'The OpenAPI for JSON-RPC',
+    'OpenRPC keeps every JSON-RPC client, server, and tool aligned with a single contract-first specification.',
+  tagline: 'Design, document, and automate JSON-RPC APIs',
   url: 'https://open-rpc.org',
   links: {
     github: 'https://github.com/open-rpc',
@@ -15,40 +15,28 @@ export const siteConfig = {
   },
   features: [
     {
-      icon: '🔧',
-      title: 'Developer Friendly',
+      icon: '🧭',
+      title: 'Contract-first clarity',
       description:
-        'Easy to understand and implement across any language. Write once, use everywhere.',
+        'Ship method definitions, params, and errors from a single source of truth so every team stays aligned.',
     },
     {
-      icon: '📝',
-      title: 'Well Documented',
+      icon: '⚙️',
+      title: 'Generative tooling',
       description:
-        'Comprehensive documentation, interactive examples, and a thriving community to help you.',
+        'Turn your schema into typed clients, server scaffolding, docs, tests, and monitors automatically.',
     },
     {
-      icon: '🚀',
-      title: 'Production Ready',
+      icon: '🧪',
+      title: 'Built-in validation',
       description:
-        'Battle tested in production environments. Used by companies worldwide.',
+        'JSON Schema-powered validation catches breaking changes and bad payloads before they hit production.',
     },
     {
-      icon: '🔄',
-      title: 'Code Generation',
+      icon: '🌐',
+      title: 'Ecosystem ready',
       description:
-        'Automatically generate client libraries, server boilerplate, and documentation.',
-    },
-    {
-      icon: '🔍',
-      title: 'Type Safe',
-      description:
-        'Full type safety with JSON Schema validation for requests and responses.',
-    },
-    {
-      icon: '⚡',
-      title: 'Tooling Ecosystem',
-      description:
-        'Rich ecosystem of tools including playground, generators, validators, and more.',
+        'Playground, debuggers, and open-source libraries plug into the spec to accelerate every release.',
     },
   ],
   usedBy: [
@@ -109,4 +97,3 @@ export const siteConfig = {
 };
 
 export type SiteConfig = typeof siteConfig;
-

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Footer, Layout, Navbar } from 'nextra-theme-docs';
 import { getPageMap } from 'nextra/page-map';
@@ -48,18 +49,12 @@ const navbar = (
       </svg>
     </a>
     <div className="nx-flex-1" />
-    <a
-      href="/docs"
-      className="nx-p-2 nx-text-current nx-font-medium"
-    >
+    <Link href="/docs" className="nx-p-2 nx-text-current nx-font-medium">
       Docs
-    </a>
-    <a
-      href="/playground"
-      className="nx-p-2 nx-text-current nx-font-medium"
-    >
+    </Link>
+    <Link href="/playground" className="nx-p-2 nx-text-current nx-font-medium">
       Playground
-    </a>
+    </Link>
   </Navbar>
 );
 

@@ -1,10 +1,11 @@
 import Image from 'next/image';
+import { Button } from '../ui/Button';
 import { siteConfig } from '../../config/site';
 
 export function Sponsors() {
   const platinumSponsors = siteConfig.sponsors.filter((s) => s.tier === 'platinum');
   const goldSponsors = siteConfig.sponsors.filter((s) => s.tier === 'gold');
-  const silverSponsors = siteConfig.sponsors.filter((s) => s.tier === 'bronze');
+  const silverSponsors = siteConfig.sponsors.filter((s) => s.tier === 'silver');
   const bronzeSponsors = siteConfig.sponsors.filter((s) => s.tier === 'bronze');
 
   return (
@@ -18,14 +19,17 @@ export function Sponsors() {
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
             OpenRPC is made possible by these amazing sponsors
           </p>
-          <a
-            href="https://github.com/sponsors/open-rpc"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline font-medium"
-          >
-            ❤️ Become a Sponsor
-          </a>
+          <div className="flex justify-center">
+            <Button
+              href="https://github.com/sponsors/open-rpc"
+              variant="outline"
+              size="lg"
+              external
+              className="btn-contrast"
+            >
+              ❤️ Become a Sponsor
+            </Button>
+          </div>
         </div>
 
         {/* Gold Sponsors */}
@@ -100,14 +104,44 @@ export function Sponsors() {
           </div>
         )}
 
-        {/* Bronze Sponsors */}
+        {/* Silver Sponsors */}
         {silverSponsors.length > 0 && (
+          <div className="mb-12">
+            <h3 className="text-center text-xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
+              Silver Sponsors
+            </h3>
+            <div className="flex flex-wrap justify-center gap-5">
+              {silverSponsors.map((sponsor, index) => (
+                <a
+                  key={index}
+                  href={sponsor.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block group"
+                >
+                  <div className="relative w-64 h-32 flex items-center justify-center">
+                    <Image
+                      src={sponsor.logo}
+                      alt={sponsor.name}
+                      fill
+                      className="object-contain"
+                      sizes="256px"
+                    />
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Bronze Sponsors */}
+        {bronzeSponsors.length > 0 && (
           <div>
             <h3 className="text-center text-xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
-              Community Sponsors 
+              Community Sponsors
             </h3>
             <div className="flex flex-wrap justify-center gap-4">
-              {silverSponsors.map((sponsor, index) => (
+              {bronzeSponsors.map((sponsor, index) => (
                 <a
                   key={index}
                   href={sponsor.url}
@@ -140,4 +174,3 @@ export function Sponsors() {
     </section>
   );
 }
-
