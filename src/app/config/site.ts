@@ -6,7 +6,7 @@ export const siteConfig = {
   name: 'OpenRPC',
   description:
     'One spec is all you need to produce tests, docs, and client/server code for your JSON-RPC API.',
-  tagline: 'Specify Once. Automate Everything.',
+  tagline: 'Specify Once. Generate Everything.',
   url: 'https://open-rpc.org',
   links: {
     github: 'https://github.com/open-rpc',
@@ -42,7 +42,7 @@ export const siteConfig = {
   ],
   usedBy: [
     // Placeholder data - replace with actual companies
-    { name: 'Metamask', logo: '/assets/logos/metamask.svg', url: 'https://github.com/MetaMask/metamask-extension/blob/eec2e919b99ac09a41183acabc1045368539327a/test/e2e/api-specs/transform.ts#L8' },
+    { name: 'Metamask', logo: '/assets/logos/metamask.svg', darkLogo: '/assets/logos/metamask-dark.svg', url: 'https://github.com/MetaMask/metamask-extension/blob/eec2e919b99ac09a41183acabc1045368539327a/test/e2e/api-specs/transform.ts#L8' },
     { name: 'Bevy', logo: '/assets/logos/bevy.svg', url: 'https://github.com/bevyengine/bevy/blob/be4114bb9e054578de409d15955c8eb50a990bab/crates/bevy_remote/src/schemas/open_rpc.rs#L16' },
     { name: 'Minecraft', logo: '/assets/logos/minecraft.svg', url: 'https://www.minecraft.net/en-us/article/minecraft-snapshot-25w35a' },
     { name: 'Ethereum Foundation', logo: '/assets/logos/ethereum-wordmark.svg', url: 'https://github.com/ethereum/execution-apis' },
@@ -56,7 +56,7 @@ export const siteConfig = {
       name: 'Ethereum Foundation',
       logo: '/assets/sponsors/ethereum-ecosystem-support.svg',
       darkLogo: '/assets/sponsors/ethereum-ecosystem-support-dark.svg',
-      url: 'https://ethereum.org/',
+      url: 'https://esp.ethereum.foundation/',
       tier: 'platinum' as const,
     },
     
