@@ -6,7 +6,7 @@ export const siteConfig = {
   name: 'OpenRPC',
   description:
     'One spec is all you need to produce tests, docs, and client/server code for your JSON-RPC API.',
-  tagline: 'Specify Once. Generate Everything.',
+  tagline: 'Spec Once. Generate Everything.',
   url: 'https://open-rpc.org',
   links: {
     github: 'https://github.com/open-rpc',
