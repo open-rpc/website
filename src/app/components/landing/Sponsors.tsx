@@ -61,14 +61,14 @@ export function Sponsors() {
                           src={sponsor.logo}
                           alt={sponsor.name}
                           fill
-                          className={`object-contain dark:hidden ${sponsor.name === 'Ethereum Foundation' ? 'scale-150' : ''}`}
+                          className={`object-contain dark:hidden ${sponsor.name === 'Ethereum Foundation' ? 'md:scale-150' : ''}`}
                           sizes="320px"
                         />
                         <Image
                           src={sponsor.darkLogo}
                           alt={sponsor.name}
                           fill
-                          className={`object-contain hidden dark:block ${sponsor.name === 'Ethereum Foundation' ? 'scale-150' : ''}`}
+                          className={`object-contain hidden dark:block ${sponsor.name === 'Ethereum Foundation' ? 'md:scale-150' : ''}`}
                           sizes="320px"
                         />
                       </>
@@ -77,7 +77,7 @@ export function Sponsors() {
                         src={sponsor.logo}
                         alt={sponsor.name}
                         fill
-                        className={`object-contain ${sponsor.name === 'Ethereum Foundation' ? 'scale-150' : ''}`}
+                        className={`object-contain ${sponsor.name === 'Ethereum Foundation' ? 'md:scale-150' : ''}`}
                         sizes="320px"
                       />
                     )}
