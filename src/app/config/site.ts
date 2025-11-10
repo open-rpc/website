@@ -6,14 +6,14 @@ export const siteConfig = {
   name: 'OpenRPC',
   description:
     'One spec is all you need to produce tests, docs, and client/server code for your JSON-RPC API.',
-  tagline: 'Specify Once. Generate Everything.',
+  tagline: 'Spec Once. Generate Everything.',
   url: 'https://open-rpc.org',
   links: {
     github: 'https://github.com/open-rpc',
     twitter: 'https://twitter.com/open_rpc',
     discord: 'https://discord.gg/gREUKnkT7C',
     docs: '/docs',
-    playground: '/playground',
+    playground: 'https://playground.open-rpc.org',
   },
   features: [
     {
@@ -51,7 +51,6 @@ export const siteConfig = {
   ] as Company[],
   sponsors: [
     // Placeholder data - replace with actual sponsors
-   /* 
     {
       name: 'Ethereum Foundation',
       logo: '/assets/sponsors/ethereum-ecosystem-support.svg',
@@ -74,7 +73,6 @@ export const siteConfig = {
       url: 'https://www.quicknode.com/',
       tier: 'gold' as const,
     },
-    */
     {
       name: 'Sponsor 4',
       logo: '/assets/sponsors/placeholder-sponsor.svg',

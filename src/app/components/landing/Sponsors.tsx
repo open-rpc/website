@@ -16,30 +16,29 @@ export function Sponsors() {
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Our Sponsors
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
+          <p className="text-lg text-gray-600 dark:text-gray-400">
             OpenRPC is made possible by these amazing sponsors
           </p>
-          <div className="flex justify-center">
-            <Button
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+            Interested in corporate sponsorship?{' '}
+            <a
               href="https://opencollective.com/openrpc#category-ABOUT"
-              variant="outline"
-              size="lg"
-              external
-              className="btn-contrast"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
             >
-              ❤️ Become a Corporate Sponsor Contact Us
-            </Button>
-
-          </div>
+              Contact us ❤️
+            </a>
+          </p>
         </div>
 
         {/* Platinum Sponsors */}
         {platinumSponsors.length > 0 && (
-          <div className="mb-16">
-            <h3 className="text-center text-4xl sm:text-5xl font-bold text-gray-700 dark:text-gray-300 mb-8">
+          <div className="mb-12">
+            <h3 className="text-center text-3xl sm:text-4xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
               Platinum Corporate Sponsors
             </h3>
-            <div className="flex flex-wrap justify-center gap-12">
+            <div className="flex flex-wrap justify-center gap-8">
               {platinumSponsors.map((sponsor, index) => (
                 <a
                   key={index}
@@ -55,32 +54,34 @@ export function Sponsors() {
                     </span>
                   </div>
                   */}
-                  {sponsor.darkLogo ? (
-                    <>
+                  <div className="relative w-80 h-40 flex items-center justify-center">
+                    {sponsor.darkLogo ? (
+                      <>
+                        <Image
+                          src={sponsor.logo}
+                          alt={sponsor.name}
+                          fill
+                          className={`object-contain dark:hidden ${sponsor.name === 'Ethereum Foundation' ? 'scale-150' : ''}`}
+                          sizes="320px"
+                        />
+                        <Image
+                          src={sponsor.darkLogo}
+                          alt={sponsor.name}
+                          fill
+                          className={`object-contain hidden dark:block ${sponsor.name === 'Ethereum Foundation' ? 'scale-150' : ''}`}
+                          sizes="320px"
+                        />
+                      </>
+                    ) : (
                       <Image
                         src={sponsor.logo}
                         alt={sponsor.name}
-                        width={700}
-                        height={280}
-                        className="object-contain dark:hidden"
+                        fill
+                        className={`object-contain ${sponsor.name === 'Ethereum Foundation' ? 'scale-150' : ''}`}
+                        sizes="320px"
                       />
-                      <Image
-                        src={sponsor.darkLogo}
-                        alt={sponsor.name}
-                        width={700}
-                        height={280}
-                        className="object-contain hidden dark:block"
-                      />
-                    </>
-                  ) : (
-                    <Image
-                      src={sponsor.logo}
-                      alt={sponsor.name}
-                      width={700}
-                      height={280}
-                      className="object-contain"
-                    />
-                  )}
+                    )}
+                  </div>
                 </a>
               ))}
             </div>
