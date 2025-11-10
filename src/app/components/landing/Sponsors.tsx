@@ -9,7 +9,7 @@ export function Sponsors() {
   const bronzeSponsors = siteConfig.sponsors.filter((s) => s.tier === 'bronze');
 
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-900/50">
+    <section className="py-20 bg-gray-50 dark:bg-gray-900/90">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-12">
@@ -32,13 +32,13 @@ export function Sponsors() {
           </div>
         </div>
 
-        {/* Gold Sponsors */}
+        {/* Platinum Sponsors */}
         {platinumSponsors.length > 0 && (
-          <div className="mb-12">
-            <h3 className="text-center text-3xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
+          <div className="mb-16">
+            <h3 className="text-center text-4xl sm:text-5xl font-bold text-gray-700 dark:text-gray-300 mb-8">
               Platinum Corporate Sponsors
             </h3>
-            <div className="flex flex-wrap justify-center gap-8">
+            <div className="flex flex-wrap justify-center gap-12">
               {platinumSponsors.map((sponsor, index) => (
                 <a
                   key={index}
@@ -54,26 +54,45 @@ export function Sponsors() {
                     </span>
                   </div>
                   */}
-                  <Image
-                    src={sponsor.logo}
-                    alt={sponsor.name}
-                    width={400}
-                    height={200}
-                    className="object-contain"
-                  />
+                  {sponsor.darkLogo ? (
+                    <>
+                      <Image
+                        src={sponsor.logo}
+                        alt={sponsor.name}
+                        width={700}
+                        height={280}
+                        className="object-contain dark:hidden"
+                      />
+                      <Image
+                        src={sponsor.darkLogo}
+                        alt={sponsor.name}
+                        width={700}
+                        height={280}
+                        className="object-contain hidden dark:block"
+                      />
+                    </>
+                  ) : (
+                    <Image
+                      src={sponsor.logo}
+                      alt={sponsor.name}
+                      width={700}
+                      height={280}
+                      className="object-contain"
+                    />
+                  )}
                 </a>
               ))}
             </div>
           </div>
         )}
 
-        {/* Silver Sponsors */}
+        {/* Gold Sponsors */}
         {goldSponsors.length > 0 && (
           <div className="mb-12">
-            <h3 className="text-center text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
+            <h3 className="text-center text-3xl sm:text-4xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
               Gold Corporate Sponsors
             </h3>
-            <div className="flex flex-wrap justify-center gap-6">
+            <div className="flex flex-wrap justify-center gap-8">
               {goldSponsors.map((sponsor, index) => (
                 <a
                   key={index}
@@ -90,13 +109,32 @@ export function Sponsors() {
                   </div>
                   */}
                   <div className="relative w-80 h-40 flex items-center justify-center">
-                    <Image
-                      src={sponsor.logo}
-                      alt={sponsor.name}
-                      fill
-                      className="object-contain"
-                      sizes="320px"
-                    />
+                    {sponsor.darkLogo ? (
+                      <>
+                        <Image
+                          src={sponsor.logo}
+                          alt={sponsor.name}
+                          fill
+                          className="object-contain dark:hidden"
+                          sizes="320px"
+                        />
+                        <Image
+                          src={sponsor.darkLogo}
+                          alt={sponsor.name}
+                          fill
+                          className="object-contain hidden dark:block"
+                          sizes="320px"
+                        />
+                      </>
+                    ) : (
+                      <Image
+                        src={sponsor.logo}
+                        alt={sponsor.name}
+                        fill
+                        className="object-contain"
+                        sizes="320px"
+                      />
+                    )}
                   </div>
                 </a>
               ))}
@@ -107,10 +145,10 @@ export function Sponsors() {
         {/* Silver Sponsors */}
         {silverSponsors.length > 0 && (
           <div className="mb-12">
-            <h3 className="text-center text-xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
+            <h3 className="text-center text-xl sm:text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
               Silver Sponsors
             </h3>
-            <div className="flex flex-wrap justify-center gap-5">
+            <div className="flex flex-wrap justify-center gap-6">
               {silverSponsors.map((sponsor, index) => (
                 <a
                   key={index}
@@ -119,14 +157,33 @@ export function Sponsors() {
                   rel="noopener noreferrer"
                   className="block group"
                 >
-                  <div className="relative w-64 h-32 flex items-center justify-center">
-                    <Image
-                      src={sponsor.logo}
-                      alt={sponsor.name}
-                      fill
-                      className="object-contain"
-                      sizes="256px"
-                    />
+                  <div className="relative w-70 h-35 flex items-center justify-center">
+                    {sponsor.darkLogo ? (
+                      <>
+                        <Image
+                          src={sponsor.logo}
+                          alt={sponsor.name}
+                          fill
+                          className="object-contain dark:hidden"
+                          sizes="280px"
+                        />
+                        <Image
+                          src={sponsor.darkLogo}
+                          alt={sponsor.name}
+                          fill
+                          className="object-contain hidden dark:block"
+                          sizes="280px"
+                        />
+                      </>
+                    ) : (
+                      <Image
+                        src={sponsor.logo}
+                        alt={sponsor.name}
+                        fill
+                        className="object-contain"
+                        sizes="280px"
+                      />
+                    )}
                   </div>
                 </a>
               ))}
@@ -137,7 +194,7 @@ export function Sponsors() {
         {/* Bronze Sponsors */}
         {bronzeSponsors.length > 0 && (
           <div>
-            <h3 className="text-center text-xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
+            <h3 className="text-center text-lg sm:text-xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
               Community Sponsors
             </h3>
             <div className="flex flex-wrap justify-center gap-4">
@@ -156,14 +213,33 @@ export function Sponsors() {
                     </span>
                   </div>
                   */}
-                  <div className="relative w-60 h-30 flex items-center justify-center">
-                    <Image
-                      src={sponsor.logo}
-                      alt={sponsor.name}
-                      fill
-                      className="object-contain"
-                      sizes="240px"
-                    />
+                  <div className="relative w-56 h-28 flex items-center justify-center">
+                    {sponsor.darkLogo ? (
+                      <>
+                        <Image
+                          src={sponsor.logo}
+                          alt={sponsor.name}
+                          fill
+                          className="object-contain dark:hidden"
+                          sizes="224px"
+                        />
+                        <Image
+                          src={sponsor.darkLogo}
+                          alt={sponsor.name}
+                          fill
+                          className="object-contain hidden dark:block"
+                          sizes="224px"
+                        />
+                      </>
+                    ) : (
+                      <Image
+                        src={sponsor.logo}
+                        alt={sponsor.name}
+                        fill
+                        className="object-contain"
+                        sizes="224px"
+                      />
+                    )}
                   </div>
                 </a>
               ))}

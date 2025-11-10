@@ -7,13 +7,15 @@ export interface Feature {
 export interface Company {
   name: string;
   logo: string;
+  darkLogo?: string;
   url?: string;
 }
 
 export interface Sponsor {
   name: string;
   logo: string;
+  darkLogo?: string;
   url: string;
-  tier?: 'gold' | 'silver' | 'bronze';
+  tier?: 'platinum' | 'gold' | 'silver' | 'bronze';
 }
 
