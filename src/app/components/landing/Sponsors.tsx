@@ -21,14 +21,15 @@ export function Sponsors() {
           </p>
           <div className="flex justify-center">
             <Button
-              href="https://github.com/sponsors/open-rpc"
+              href="https://opencollective.com/openrpc#category-ABOUT"
               variant="outline"
               size="lg"
               external
               className="btn-contrast"
             >
-              ❤️ Become a Sponsor
+              ❤️ Become a Corporate Sponsor Contact Us
             </Button>
+
           </div>
         </div>
 
@@ -195,8 +196,19 @@ export function Sponsors() {
         {bronzeSponsors.length > 0 && (
           <div>
             <h3 className="text-center text-lg sm:text-xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
-              Community Sponsors
+              Github Community Sponsors
             </h3>
+            <div className="flex justify-center mb-6">
+              <Button
+                href="https://github.com/sponsors/open-rpc"
+                variant="outline"
+                size="lg"
+                external
+                className="btn-contrast"
+              >
+                ❤️ Become a Github Community Sponsor
+              </Button>
+            </div>
             <div className="flex flex-wrap justify-center gap-4">
               {bronzeSponsors.map((sponsor, index) => (
                 <a
