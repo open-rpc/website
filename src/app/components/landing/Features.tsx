@@ -39,8 +39,8 @@ export function Features() {
             A clear versioned API spec can boost developer productivity by 10x
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300">
-            With OpenRPC, you can iterate from prototype to production-grade services in hours, not weeks. You'll build discoverable, versioned APIs with a schema that acts as the living agreement between product,
-            platform, and protocol teams.
+            With OpenRPC, you can go from prototype to production-grade services in hours, not weeks. 
+            You'll build discoverable, versioned APIs with JSON Schema to enforce client contracts, eliminate boilerplate, and scale faster.  
           </p>
 
           <motion.div
