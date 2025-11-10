@@ -33,6 +33,54 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.hero-section {
+  background-image: linear-gradient(to bottom, #ffffff, #f8fafc, #dbeafe);
+}
+
+.hero-heading {
+  color: #0f172a;
+}
+
+.hero-body {
+  color: #475569;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) .hero-section {
+    background-image: linear-gradient(to bottom, #020617, #0f172a, #000000);
+  }
+
+  :root:not(.light) .hero-heading {
+    color: #ffffff;
+  }
+
+  :root:not(.light) .hero-body {
+    color: #d1d5db;
+  }
+}
+
+.dark .hero-section {
+  background-image: linear-gradient(to bottom, #020617, #0f172a, #000000);
+}
+
+.dark .hero-heading {
+  color: #ffffff;
+}
+
+.dark .hero-body {
+  color: #d1d5db;
+}
+
+@layer components {
+  .btn-contrast {
+    color: #0f172a !important;
+  }
+
+  .dark .btn-contrast {
+    color: #ffffff !important;
+  }
+}
+
 /* Smooth scrolling for anchor links */
 html {
   scroll-behavior: smooth;

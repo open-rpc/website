@@ -26,13 +26,32 @@ export function UsedBy() {
               className="flex items-center justify-center p-4 grayscale hover:grayscale-0 transition-all opacity-80 hover:opacity-100"
             >
               <div className="relative w-48 h-24 flex items-center justify-center">
-              <Image
-                src={company.logo}
-                alt={company.name}
-                  fill
-                  className="object-contain"
-                  sizes="192px"
-                />
+                {company.darkLogo ? (
+                  <>
+                    <Image
+                      src={company.logo}
+                      alt={company.name}
+                      fill
+                      className="object-contain dark:hidden"
+                      sizes="192px"
+                    />
+                    <Image
+                      src={company.darkLogo}
+                      alt={company.name}
+                      fill
+                      className="object-contain hidden dark:block"
+                      sizes="192px"
+                    />
+                  </>
+                ) : (
+                  <Image
+                    src={company.logo}
+                    alt={company.name}
+                    fill
+                    className="object-contain"
+                    sizes="192px"
+                  />
+                )}
               </div>
             </a>
           ))}

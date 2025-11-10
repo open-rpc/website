@@ -1,39 +1,103 @@
+"use client";
+
+import { motion } from 'framer-motion';
 import { siteConfig } from '../../config/site';
+
+const highlightList = [
+  {
+    title: 'Ship changes with confidence',
+    description:
+      'Turn your spec into guardrails that catch API drift before production',
+  },
+  {
+    title: 'Composable tooling that fits your stack',
+    description:
+      'Codegen, validation, and testing are modular. Pick the parts you need, customize or chain them together end-to-end to fit your workflow.',
+  },
+  {
+    title: 'Discoverability out of the box',
+    description:
+      'Let tools self-configure via rpc.discover. Our spec is discoverable by design.',
+  },
+];
 
 export function Features() {
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-900/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Why OpenRPC?
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            A powerful, flexible, and developer-friendly standard for JSON-RPC APIs
+    <section className="py-24 bg-white dark:bg-slate-950">
+      <div className="mx-auto flex max-w-5xl flex-col items-center gap-12 px-4 text-center sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
+          className="space-y-6"
+        >
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600 dark:text-blue-300">
+            Why OpenRPC
           </p>
-        </div>
+          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl dark:text-white">
+            A clear versioned API spec can boost developer productivity by 10x
+          </h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300">
+            With OpenRPC, you can go from prototype to production-grade services in hours, not weeks. 
+            You'll build discoverable, versioned APIs with JSON Schema to enforce client contracts, eliminate boilerplate, and scale faster.  
+          </p>
 
-        {/* Feature Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {siteConfig.features.map((feature, index) => (
-            <div
-              key={index}
-              className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 hover:shadow-lg transition-shadow"
-            >
-              {/* Icon placeholder - you can replace with actual icons later */}
-              <div className="text-4xl mb-4">{feature.icon}</div>
-
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                {feature.title}
-              </h3>
-
-              <p className="text-gray-600 dark:text-gray-400">{feature.description}</p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="mx-auto w-full max-w-3xl rounded-[32px] border border-blue-100/70 bg-gradient-to-b from-white via-slate-50 to-blue-50 p-8 text-left shadow-lg dark:border-blue-500/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950"
+          >
+            <div className="flex flex-col divide-y divide-white/60 dark:divide-white/10">
+              {highlightList.map((item, index) => (
+                <div key={item.title} className="flex flex-col gap-4 py-6 first:pt-0 last:pb-0">
+                  <div className="flex items-center gap-4">
+                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-base font-semibold text-white shadow-lg shadow-blue-600/40 dark:bg-blue-500">
+                      {index + 1}
+                    </span>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{item.title}</h3>
+                  </div>
+                  <p className="pl-14 text-base text-gray-600 dark:text-gray-300">{item.description}</p>
+                </div>
+              ))}
             </div>
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          className="grid w-full gap-6 text-left sm:grid-cols-2"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={{
+            hidden: {},
+            show: {
+              transition: {
+                staggerChildren: 0.12,
+              },
+            },
+          }}
+        >
+          {siteConfig.features.map((feature) => (
+            <motion.article
+              key={feature.title}
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                show: { opacity: 1, y: 0 },
+              }}
+              className="rounded-2xl border border-gray-100 bg-white p-6 shadow-lg shadow-gray-200/40 transition hover:-translate-y-1 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/30"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-2xl dark:bg-blue-500/10">
+                {feature.icon}
+              </div>
+              <h3 className="mt-6 text-xl font-semibold text-gray-900 dark:text-white">{feature.title}</h3>
+              <p className="mt-3 text-base text-gray-600 dark:text-gray-300">{feature.description}</p>
+            </motion.article>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
 }
-
