@@ -72,24 +72,6 @@ export const siteConfig = {
       darkLogo: '/assets/sponsors/quick-node-horizontal-dark.svg',
       url: 'https://www.quicknode.com/',
       tier: 'gold' as const,
-    },
-    {
-      name: 'Sponsor 4',
-      logo: '/assets/sponsors/placeholder-sponsor.svg',
-      url: '#',
-      tier: 'bronze' as SponsorTier,
-    },
-    {
-      name: 'Sponsor 5',
-      logo: '/assets/sponsors/placeholder-sponsor.svg',
-      url: '#',
-      tier: 'bronze' as SponsorTier,
-    },
-    {
-      name: 'Sponsor 6',
-      logo: '/assets/sponsors/placeholder-sponsor.svg',
-      url: '#',
-      tier: 'bronze' as SponsorTier,
     }
   ] as Sponsor[],
 };

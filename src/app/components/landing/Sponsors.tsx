@@ -194,7 +194,7 @@ export function Sponsors() {
         )}
 
         {/* Bronze Sponsors */}
-        {bronzeSponsors.length > 0 && (
+        {bronzeSponsors.length >= 0 && (
           <div>
             <h3 className="text-center text-lg sm:text-xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
               Github Community Sponsors
