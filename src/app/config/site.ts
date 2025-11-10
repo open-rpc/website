@@ -51,7 +51,7 @@ export const siteConfig = {
   ] as Company[],
   sponsors: [
     // Placeholder data - replace with actual sponsors
-    
+   /* 
     {
       name: 'Ethereum Foundation',
       logo: '/assets/sponsors/ethereum-ecosystem-support.svg',
@@ -74,6 +74,7 @@ export const siteConfig = {
       url: 'https://www.quicknode.com/',
       tier: 'gold' as const,
     },
+    */
     {
       name: 'Sponsor 4',
       logo: '/assets/sponsors/placeholder-sponsor.svg',
