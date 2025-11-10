@@ -53,18 +53,19 @@ export function HeroContent({
             <Button href={docsUrl} size="lg" variant="primary">
               Get Started
             </Button>
-            <Button href={playgroundUrl} size="lg" variant="outline" className="btn-contrast">
-              Open Playground
+            <Button href={githubUrl} size="lg" variant="outline" className="btn-contrast">
+              View on GitHub
             </Button>
-            <Button
+            {/*<Button
               href={githubUrl}
               size="lg"
               variant="ghost"
               external
               className="btn-contrast"
             >
-              View on GitHub
+              Open Playground
             </Button>
+            */}
           </div>
         </motion.div>
 

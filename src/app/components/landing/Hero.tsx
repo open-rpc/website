@@ -34,25 +34,7 @@ const metricsSchema = {
         },
       },
     },
-    {
-      name: 'metrics_stream',
-      summary: 'Open a stream of metric deltas.',
-      params: [
-        {
-          name: 'service',
-          required: true,
-          schema: { type: 'string' },
-        },
-        {
-          name: 'intervalSeconds',
-          schema: { type: 'integer', minimum: 5, default: 15 },
-        },
-      ],
-      result: {
-        name: 'subscriptionId',
-        schema: { type: 'string' },
-      },
-    },
+    
   ],
 };
 

@@ -3,8 +3,8 @@ type SponsorTier = 'platinum' | 'gold' | 'silver' | 'bronze';
 export const siteConfig = {
   name: 'OpenRPC',
   description:
-    'OpenRPC keeps every JSON-RPC client, server, and tool aligned with a single contract-first specification.',
-  tagline: 'Design, document, and automate JSON-RPC APIs',
+    'One spec is all you need to produce tests, docs, and client/server code for your JSON-RPC API.',
+  tagline: 'Specify Once. Automate Everything.',
   url: 'https://open-rpc.org',
   links: {
     github: 'https://github.com/open-rpc',
@@ -16,27 +16,26 @@ export const siteConfig = {
   features: [
     {
       icon: '🧭',
-      title: 'Contract-first clarity',
-      description:
-        'Ship method definitions, params, and errors from a single source of truth so every team stays aligned.',
+      title: 'Generate clients in minutes',
+      description: 'Auto-generate idiomatic clients in multiple languages. Less glue code; fewer edge-case bugs.',
     },
     {
       icon: '⚙️',
-      title: 'Generative tooling',
+      title: 'Human-readable, schema-powered',
       description:
-        'Turn your schema into typed clients, server scaffolding, docs, tests, and monitors automatically.',
+        'Our spec is human-readable and json schema-powered. More expressive than most ad-hoc code comments or READMEs.',
     },
     {
       icon: '🧪',
-      title: 'Built-in validation',
+      title: 'Validate behavior as you build',
       description:
-        'JSON Schema-powered validation catches breaking changes and bad payloads before they hit production.',
+        'Turn spec examples into real requests/assertions using our `test-coverage` tool',
     },
     {
       icon: '🌐',
       title: 'Ecosystem ready',
       description:
-        'Playground, debuggers, and open-source libraries plug into the spec to accelerate every release.',
+        'Our playground, debugger, and linter are open-source libraries that empower the spec to accelerate every release.',
     },
   ],
   usedBy: [

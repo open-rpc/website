@@ -5,19 +5,19 @@ import { siteConfig } from '../../config/site';
 
 const highlightList = [
   {
-    title: 'Contract-first workflow',
+    title: 'Ship changes with confidence',
     description:
-      'Model every method, param, and error in a single schema so product, client, and protocol teams always build from the same contract.',
+      'Turn your spec into guardrails that catch API drift before production',
   },
   {
-    title: 'Connected tooling',
+    title: 'Composable tooling that fits your stack',
     description:
-      'Generators, docs, linters, monitors, and dashboards all ingest the same OpenRPC file so nothing drifts between environments.',
+      'Codegen, validation, and testing are modular. Pick the parts you need, customize or chain them together end-to-end to fit your workflow.',
   },
   {
-    title: 'Confident releases',
+    title: 'Discoverability out of the box',
     description:
-      'JSON Schema validation and automated diffing catch breaking payloads before they reach production.',
+      'Let tools self-configure via rpc.discover. Our spec is discoverable by design.',
   },
 ];
 
@@ -36,10 +36,10 @@ export function Features() {
             Why OpenRPC
           </p>
           <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl dark:text-white">
-            Powerful features built for JSON-RPC teams
+            A clear versioned API spec can boost developer productivity by 10x
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300">
-            Build confident, discoverable APIs with a schema that acts as the living agreement between product,
+            With OpenRPC, you can iterate from prototype to production-grade services in hours, not weeks. You'll build discoverable, versioned APIs with a schema that acts as the living agreement between product,
             platform, and protocol teams.
           </p>
 
