@@ -13,7 +13,7 @@ export const siteConfig = {
     twitter: 'https://twitter.com/open_rpc',
     discord: 'https://discord.gg/gREUKnkT7C',
     docs: '/docs',
-    playground: '/playground',
+    playground: 'https://playground.open-rpc.org',
   },
   features: [
     {

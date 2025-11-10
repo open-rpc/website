@@ -52,7 +52,7 @@ const navbar = (
     <Link href="/docs" className="nx-p-2 nx-text-current nx-font-medium">
       Docs
     </Link>
-    <Link href="/playground" className="nx-p-2 nx-text-current nx-font-medium">
+    <Link target="_blank" rel="noopener noreferrer" href="https://playground.open-rpc.org" className="nx-p-2 nx-text-current nx-font-medium">
       Playground
     </Link>
   </Navbar>
