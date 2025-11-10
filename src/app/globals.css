@@ -104,3 +104,7 @@ main {
 .dark [cmdk-group-heading] {
   color: #9ca3af;
 }
+
+.nextra-mobile-nav {
+  backdrop-filter: blur(100px) saturate(200%);
+}
