@@ -205,7 +205,7 @@ export function Sponsors() {
                 variant="outline"
                 size="lg"
                 external
-                className="btn-contrast"
+                className="text-white"
               >
                 ❤️ Become a Github Community Sponsor
               </Button>
