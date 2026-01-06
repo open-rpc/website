@@ -68,7 +68,7 @@ export const siteConfig = {
     },
     {
       name: 'QuickNode',
-      logo: '/assets/sponsors/quick-node-horizontal-color.svg',
+      logo: '/assets/sponsors/quick-node-horizontal-light.svg',
       darkLogo: '/assets/sponsors/quick-node-horizontal-dark.svg',
       url: 'https://www.quicknode.com/',
       tier: 'gold' as const,
