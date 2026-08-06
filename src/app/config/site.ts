@@ -57,6 +57,7 @@ export const siteConfig = {
       darkLogo: '/assets/sponsors/ethereum-ecosystem-support-dark.svg',
       url: 'https://esp.ethereum.foundation/',
       tier: 'platinum' as const,
+      scale: 1.5,
     },
     
     {
@@ -79,6 +80,7 @@ export const siteConfig = {
       darkLogo: '/assets/sponsors/gcc-dark.svg',
       url: "https://www.gccofficial.org/",
       tier: 'gold' as const,
+      scale: 0.9
     }
   ] as Sponsor[],
 };
