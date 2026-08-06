@@ -72,6 +72,13 @@ export const siteConfig = {
       darkLogo: '/assets/sponsors/quick-node-horizontal-dark.svg',
       url: 'https://www.quicknode.com/',
       tier: 'gold' as const,
+    },
+    {
+      name: 'GCC',
+      logo: '/assets/sponsors/gcc-light.svg',
+      darkLogo: '/assets/sponsors/gcc-dark.svg',
+      url: "https://www.gccofficial.org/",
+      tier: 'gold' as const,
     }
   ] as Sponsor[],
 };
