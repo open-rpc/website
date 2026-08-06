@@ -1,6 +1,44 @@
+import type { CSSProperties } from 'react';
 import Image from 'next/image';
 import { Button } from '../ui/Button';
 import { siteConfig } from '../../config/site';
+import type { Sponsor } from './types';
+
+const tierLogoSize = {
+  platinum: { box: 'w-80 h-40', sizes: '320px' },
+  gold: { box: 'w-80 h-40', sizes: '320px' },
+  silver: { box: 'w-70 h-35', sizes: '280px' },
+  bronze: { box: 'w-56 h-28', sizes: '224px' },
+} as const;
+
+type TierLogoSize = (typeof tierLogoSize)[keyof typeof tierLogoSize];
+
+function SponsorLogo({ sponsor, box, sizes }: { sponsor: Sponsor } & TierLogoSize) {
+  return (
+    <div
+      className={`relative flex items-center justify-center ${box} md:scale-(--logo-scale,1)`}
+      style={sponsor.scale ? ({ '--logo-scale': sponsor.scale } as CSSProperties) : undefined}
+    >
+      <Image
+        src={sponsor.logo}
+        alt={sponsor.name}
+        fill
+        sizes={sizes}
+        className={`object-contain ${sponsor.darkLogo ? 'dark:hidden' : ''}`}
+      />
+      {sponsor.darkLogo && (
+        <Image
+          src={sponsor.darkLogo}
+          alt=""
+          aria-hidden
+          fill
+          sizes={sizes}
+          className="object-contain hidden dark:block"
+        />
+      )}
+    </div>
+  );
+}
 
 export function Sponsors() {
   const platinumSponsors = siteConfig.sponsors.filter((s) => s.tier === 'platinum');
@@ -47,41 +85,7 @@ export function Sponsors() {
                   rel="noopener noreferrer"
                   className="block group"
                 >
-                  {/* Placeholder for sponsor logo 
-                  <div className="w-48 h-24 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg flex items-center justify-center group-hover:shadow-lg transition-shadow">
-                    <span className="text-sm text-gray-500 dark:text-gray-500 font-medium">
-                      {sponsor.name}
-                    </span>
-                  </div>
-                  */}
-                  <div className="relative w-80 h-40 flex items-center justify-center">
-                    {sponsor.darkLogo ? (
-                      <>
-                        <Image
-                          src={sponsor.logo}
-                          alt={sponsor.name}
-                          fill
-                          className={`object-contain dark:hidden ${sponsor.name === 'Ethereum Foundation' ? 'md:scale-150' : ''}`}
-                          sizes="320px"
-                        />
-                        <Image
-                          src={sponsor.darkLogo}
-                          alt={sponsor.name}
-                          fill
-                          className={`object-contain hidden dark:block ${sponsor.name === 'Ethereum Foundation' ? 'md:scale-150' : ''}`}
-                          sizes="320px"
-                        />
-                      </>
-                    ) : (
-                      <Image
-                        src={sponsor.logo}
-                        alt={sponsor.name}
-                        fill
-                        className={`object-contain ${sponsor.name === 'Ethereum Foundation' ? 'md:scale-150' : ''}`}
-                        sizes="320px"
-                      />
-                    )}
-                  </div>
+                  <SponsorLogo sponsor={sponsor} {...tierLogoSize.platinum} />
                 </a>
               ))}
             </div>
@@ -103,41 +107,7 @@ export function Sponsors() {
                   rel="noopener noreferrer"
                   className="block group"
                 >
-                  {/* Placeholder for sponsor logo 
-                  <div className="w-36 h-20 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg flex items-center justify-center group-hover:shadow-lg transition-shadow">
-                    <span className="text-xs text-gray-500 dark:text-gray-500 font-medium">
-                      {sponsor.name}
-                    </span>
-                  </div>
-                  */}
-                  <div className="relative w-80 h-40 flex items-center justify-center">
-                    {sponsor.darkLogo ? (
-                      <>
-                        <Image
-                          src={sponsor.logo}
-                          alt={sponsor.name}
-                          fill
-                          className="object-contain dark:hidden"
-                          sizes="320px"
-                        />
-                        <Image
-                          src={sponsor.darkLogo}
-                          alt={sponsor.name}
-                          fill
-                          className="object-contain hidden dark:block"
-                          sizes="320px"
-                        />
-                      </>
-                    ) : (
-                      <Image
-                        src={sponsor.logo}
-                        alt={sponsor.name}
-                        fill
-                        className="object-contain"
-                        sizes="320px"
-                      />
-                    )}
-                  </div>
+                  <SponsorLogo sponsor={sponsor} {...tierLogoSize.gold} />
                 </a>
               ))}
             </div>
@@ -159,34 +129,7 @@ export function Sponsors() {
                   rel="noopener noreferrer"
                   className="block group"
                 >
-                  <div className="relative w-70 h-35 flex items-center justify-center">
-                    {sponsor.darkLogo ? (
-                      <>
-                        <Image
-                          src={sponsor.logo}
-                          alt={sponsor.name}
-                          fill
-                          className="object-contain dark:hidden"
-                          sizes="280px"
-                        />
-                        <Image
-                          src={sponsor.darkLogo}
-                          alt={sponsor.name}
-                          fill
-                          className="object-contain hidden dark:block"
-                          sizes="280px"
-                        />
-                      </>
-                    ) : (
-                      <Image
-                        src={sponsor.logo}
-                        alt={sponsor.name}
-                        fill
-                        className="object-contain"
-                        sizes="280px"
-                      />
-                    )}
-                  </div>
+                  <SponsorLogo sponsor={sponsor} {...tierLogoSize.silver} />
                 </a>
               ))}
             </div>
@@ -219,41 +162,7 @@ export function Sponsors() {
                   rel="noopener noreferrer"
                   className="block group"
                 >
-                  {/* Placeholder for sponsor logo 
-                  <div className="w-28 h-16 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded flex items-center justify-center group-hover:shadow transition-shadow">
-                    <span className="text-xs text-gray-500 dark:text-gray-500 font-medium">
-                      {sponsor.name}
-                    </span>
-                  </div>
-                  */}
-                  <div className="relative w-56 h-28 flex items-center justify-center">
-                    {sponsor.darkLogo ? (
-                      <>
-                        <Image
-                          src={sponsor.logo}
-                          alt={sponsor.name}
-                          fill
-                          className="object-contain dark:hidden"
-                          sizes="224px"
-                        />
-                        <Image
-                          src={sponsor.darkLogo}
-                          alt={sponsor.name}
-                          fill
-                          className="object-contain hidden dark:block"
-                          sizes="224px"
-                        />
-                      </>
-                    ) : (
-                      <Image
-                        src={sponsor.logo}
-                        alt={sponsor.name}
-                        fill
-                        className="object-contain"
-                        sizes="224px"
-                      />
-                    )}
-                  </div>
+                  <SponsorLogo sponsor={sponsor} {...tierLogoSize.bronze} />
                 </a>
               ))}
             </div>

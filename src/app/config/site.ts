@@ -57,6 +57,7 @@ export const siteConfig = {
       darkLogo: '/assets/sponsors/ethereum-ecosystem-support-dark.svg',
       url: 'https://esp.ethereum.foundation/',
       tier: 'platinum' as const,
+      scale: 1.5,
     },
     
     {
@@ -72,6 +73,14 @@ export const siteConfig = {
       darkLogo: '/assets/sponsors/quick-node-horizontal-dark.svg',
       url: 'https://www.quicknode.com/',
       tier: 'gold' as const,
+    },
+    {
+      name: 'GCC',
+      logo: '/assets/sponsors/gcc-light.svg',
+      darkLogo: '/assets/sponsors/gcc-dark.svg',
+      url: "https://www.gccofficial.org/",
+      tier: 'gold' as const,
+      scale: 0.9
     }
   ] as Sponsor[],
 };
