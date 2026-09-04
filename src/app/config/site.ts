@@ -105,7 +105,7 @@ export const siteConfig = {
     {
       name: 'GCC',
       caption: 'GCC supporting the development of global digital public goods',
-      blurb: 'GCC supporting the development of global digital public goods',
+      blurb: 'The GCC Fund is a Chinese donation fund under GCC, supporting the development of global digital public goods.',
       logo: '/assets/sponsors/gcc-light.svg',
       darkLogo: '/assets/sponsors/gcc-dark.svg',
       url: 'https://www.gccofficial.org/',

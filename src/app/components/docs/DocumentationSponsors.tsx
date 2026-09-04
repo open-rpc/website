@@ -97,7 +97,7 @@ export function DocumentationSponsors() {
             {sponsorsWithBlurbs.map((sponsor) => (
               <article
                 key={sponsor.name}
-                className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950"
+                className="max-w-3xl rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950"
               >
                 <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
                   <div className="h-14 w-28 shrink-0">
