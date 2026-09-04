@@ -1,7 +1,5 @@
 import type { Company, Sponsor } from '../components/landing/types';
 
-type SponsorTier = 'platinum' | 'gold' | 'silver' | 'bronze';
-
 export const siteConfig = {
   name: 'OpenRPC',
   description:
@@ -19,7 +17,8 @@ export const siteConfig = {
     {
       icon: '🧭',
       title: 'Generate clients in minutes',
-      description: 'Auto-generate idiomatic clients in multiple languages. Less glue code; fewer edge-case bugs.',
+      description:
+        'Auto-generate idiomatic clients in multiple languages. Less glue code; fewer edge-case bugs.',
     },
     {
       icon: '⚙️',
@@ -42,26 +41,54 @@ export const siteConfig = {
   ],
   usedBy: [
     // Placeholder data - replace with actual companies
-    { name: 'Metamask', logo: '/assets/logos/metamask.svg', darkLogo: '/assets/logos/metamask-dark.svg', url: 'https://github.com/MetaMask/metamask-extension/blob/eec2e919b99ac09a41183acabc1045368539327a/test/e2e/api-specs/transform.ts#L8' },
-    { name: 'Bevy', logo: '/assets/logos/bevy.svg', url: 'https://github.com/bevyengine/bevy/blob/be4114bb9e054578de409d15955c8eb50a990bab/crates/bevy_remote/src/schemas/open_rpc.rs#L16' },
-    { name: 'Minecraft', logo: '/assets/logos/minecraft.svg', url: 'https://www.minecraft.net/en-us/article/minecraft-snapshot-25w35a' },
-    { name: 'Ethereum Foundation', logo: '/assets/logos/ethereum-wordmark.svg', url: 'https://github.com/ethereum/execution-apis' },
-    { name: 'ZCash', logo: '/assets/logos/zcash.svg', darkLogo: '/assets/logos/zcash-dark.svg', url: 'https://github.com/zcash/wallet/blob/eabfb6278453328493ca97e6a99d8d889bb46f42/zallet/src/components/json_rpc/methods/openrpc.rs#L129' },
-    { name: 'Filecoin', logo: '/assets/logos/filecoin.svg', url: 'https://github.com/filecoin-project/lotus/blob/5b29aabf24d9063cfcc874e46c770281eb2ba622/build/openrpc.go#L23' },
+    {
+      name: 'Metamask',
+      logo: '/assets/logos/metamask.svg',
+      darkLogo: '/assets/logos/metamask-dark.svg',
+      url: 'https://github.com/MetaMask/metamask-extension/blob/eec2e919b99ac09a41183acabc1045368539327a/test/e2e/api-specs/transform.ts#L8',
+    },
+    {
+      name: 'Bevy',
+      logo: '/assets/logos/bevy.svg',
+      url: 'https://github.com/bevyengine/bevy/blob/be4114bb9e054578de409d15955c8eb50a990bab/crates/bevy_remote/src/schemas/open_rpc.rs#L16',
+    },
+    {
+      name: 'Minecraft',
+      logo: '/assets/logos/minecraft.svg',
+      url: 'https://www.minecraft.net/en-us/article/minecraft-snapshot-25w35a',
+    },
+    {
+      name: 'Ethereum Foundation',
+      logo: '/assets/logos/ethereum-wordmark.svg',
+      url: 'https://github.com/ethereum/execution-apis',
+    },
+    {
+      name: 'ZCash',
+      logo: '/assets/logos/zcash.svg',
+      darkLogo: '/assets/logos/zcash-dark.svg',
+      url: 'https://github.com/zcash/wallet/blob/eabfb6278453328493ca97e6a99d8d889bb46f42/zallet/src/components/json_rpc/methods/openrpc.rs#L129',
+    },
+    {
+      name: 'Filecoin',
+      logo: '/assets/logos/filecoin.svg',
+      url: 'https://github.com/filecoin-project/lotus/blob/5b29aabf24d9063cfcc874e46c770281eb2ba622/build/openrpc.go#L23',
+    },
   ] as Company[],
   sponsors: [
     // Placeholder data - replace with actual sponsors
     {
       name: 'Ethereum Foundation',
+      caption: 'Ethereum Foundation',
       logo: '/assets/sponsors/ethereum-ecosystem-support.svg',
       darkLogo: '/assets/sponsors/ethereum-ecosystem-support-dark.svg',
       url: 'https://esp.ethereum.foundation/',
       tier: 'platinum' as const,
       scale: 1.5,
     },
-    
+
     {
       name: 'Chainlink',
+      caption: 'Chainlink',
       logo: '/assets/sponsors/chainlink.svg',
       darkLogo: '/assets/sponsors/chainlink-dark.svg',
       url: 'https://chain.link/',
@@ -69,6 +96,7 @@ export const siteConfig = {
     },
     {
       name: 'QuickNode',
+      caption: 'QuickNode',
       logo: '/assets/sponsors/quick-node-horizontal-light.svg',
       darkLogo: '/assets/sponsors/quick-node-horizontal-dark.svg',
       url: 'https://www.quicknode.com/',
@@ -76,12 +104,13 @@ export const siteConfig = {
     },
     {
       name: 'GCC',
+      caption: 'GCC supporting the development of global digital public goods',
       logo: '/assets/sponsors/gcc-light.svg',
       darkLogo: '/assets/sponsors/gcc-dark.svg',
-      url: "https://www.gccofficial.org/",
+      url: 'https://www.gccofficial.org/',
       tier: 'gold' as const,
-      scale: 0.9
-    }
+      scale: 0.9,
+    },
   ] as Sponsor[],
 };
 

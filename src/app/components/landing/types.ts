@@ -13,6 +13,7 @@ export interface Company {
 
 export interface Sponsor {
   name: string;
+  caption: string;
   logo: string;
   darkLogo?: string;
   url: string;
@@ -24,4 +25,3 @@ export interface Sponsor {
    */
   scale?: number;
 }
-
