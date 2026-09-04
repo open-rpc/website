@@ -60,7 +60,7 @@ export function DocumentationSponsors() {
         >
           Our Sponsors
         </h2>
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+        <div className="mt-6 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
           {siteConfig.sponsors.map((sponsor) => (
             <a
               key={sponsor.name}
@@ -107,7 +107,7 @@ export function DocumentationSponsors() {
                     <h3 className="text-xl font-semibold text-gray-950 dark:text-white">
                       {sponsor.name}
                     </h3>
-                    <p className="mt-3 max-w-2xl text-base leading-7 text-gray-600 dark:text-gray-400">
+                    <p className="mt-3 max-w-2xl text-sm leading-6 text-gray-600 dark:text-gray-400">
                       {sponsor.blurb}
                     </p>
                     <a
