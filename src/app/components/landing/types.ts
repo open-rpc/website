@@ -14,6 +14,7 @@ export interface Company {
 export interface Sponsor {
   name: string;
   caption: string;
+  blurb?: string;
   logo: string;
   darkLogo?: string;
   url: string;
