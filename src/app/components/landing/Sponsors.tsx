@@ -40,6 +40,25 @@ function SponsorLogo({ sponsor, box, sizes }: { sponsor: Sponsor } & TierLogoSiz
   );
 }
 
+function SponsorLink({ sponsor, logoSize }: { sponsor: Sponsor; logoSize: TierLogoSize }) {
+  return (
+    <a
+      href={sponsor.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group relative block rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
+    >
+      <SponsorLogo sponsor={sponsor} {...logoSize} />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute top-1/8 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium whitespace-nowrap text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none dark:bg-gray-100 dark:text-gray-900"
+      >
+        {sponsor.caption}
+      </span>
+    </a>
+  );
+}
+
 export function Sponsors() {
   const platinumSponsors = siteConfig.sponsors.filter((s) => s.tier === 'platinum');
   const goldSponsors = siteConfig.sponsors.filter((s) => s.tier === 'gold');
@@ -77,16 +96,12 @@ export function Sponsors() {
               Platinum Corporate Sponsors
             </h3>
             <div className="flex flex-wrap justify-center gap-8">
-              {platinumSponsors.map((sponsor, index) => (
-                <a
-                  key={index}
-                  href={sponsor.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block group"
-                >
-                  <SponsorLogo sponsor={sponsor} {...tierLogoSize.platinum} />
-                </a>
+              {platinumSponsors.map((sponsor) => (
+                <SponsorLink
+                  key={sponsor.name}
+                  sponsor={sponsor}
+                  logoSize={tierLogoSize.platinum}
+                />
               ))}
             </div>
           </div>
@@ -99,16 +114,8 @@ export function Sponsors() {
               Gold Corporate Sponsors
             </h3>
             <div className="flex flex-wrap justify-center gap-8">
-              {goldSponsors.map((sponsor, index) => (
-                <a
-                  key={index}
-                  href={sponsor.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block group"
-                >
-                  <SponsorLogo sponsor={sponsor} {...tierLogoSize.gold} />
-                </a>
+              {goldSponsors.map((sponsor) => (
+                <SponsorLink key={sponsor.name} sponsor={sponsor} logoSize={tierLogoSize.gold} />
               ))}
             </div>
           </div>
@@ -121,16 +128,8 @@ export function Sponsors() {
               Silver Sponsors
             </h3>
             <div className="flex flex-wrap justify-center gap-6">
-              {silverSponsors.map((sponsor, index) => (
-                <a
-                  key={index}
-                  href={sponsor.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block group"
-                >
-                  <SponsorLogo sponsor={sponsor} {...tierLogoSize.silver} />
-                </a>
+              {silverSponsors.map((sponsor) => (
+                <SponsorLink key={sponsor.name} sponsor={sponsor} logoSize={tierLogoSize.silver} />
               ))}
             </div>
           </div>
@@ -154,16 +153,8 @@ export function Sponsors() {
               </Button>
             </div>
             <div className="flex flex-wrap justify-center gap-4">
-              {bronzeSponsors.map((sponsor, index) => (
-                <a
-                  key={index}
-                  href={sponsor.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block group"
-                >
-                  <SponsorLogo sponsor={sponsor} {...tierLogoSize.bronze} />
-                </a>
+              {bronzeSponsors.map((sponsor) => (
+                <SponsorLink key={sponsor.name} sponsor={sponsor} logoSize={tierLogoSize.bronze} />
               ))}
             </div>
           </div>

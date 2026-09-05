@@ -5,4 +5,5 @@ export default {
   beginners: 'Beginners Guide',
   developers: 'Developers',
   learn: 'Learn More',
+  sponsors: 'Sponsors',
 }
