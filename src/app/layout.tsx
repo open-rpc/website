@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { Footer, Layout, Navbar } from 'nextra-theme-docs';
+import { Layout, Navbar } from 'nextra-theme-docs';
 import { getPageMap } from 'nextra/page-map';
 import { Analytics } from "@vercel/analytics/next"
 import 'nextra-theme-docs/style.css';
@@ -60,7 +60,6 @@ const navbar = (
   </Navbar>
 );
 
-const footer = <Footer>Apache License 2.0 {new Date().getFullYear()} © OpenRPC.</Footer>;
 
 export default async function RootLayout({
   children,
@@ -74,7 +73,6 @@ export default async function RootLayout({
           navbar={navbar}
           pageMap={await getPageMap()}
           docsRepositoryBase="https://github.com/open-rpc/website"
-          footer={footer}
         >
           {children}
         </Layout>
