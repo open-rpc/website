@@ -1,0 +1,232 @@
+---
+title: OpenRPC Linter | Installation, configuration, and usage
+description: Install, configure, and run the OpenRPC Linter against an OpenRPC document.
+asIndexPage: true
+---
+
+# OpenRPC Linter
+
+The OpenRPC Linter is a fast, extensible command-line tool for checking the
+quality and consistency of OpenRPC documents. It complements specification
+validation with rules for documentation completeness, schema quality,
+usability, and uniqueness.
+
+## Installation
+
+### npm
+
+For JavaScript and TypeScript projects, install the linter as a development
+dependency:
+
+```bash
+npm install --save-dev @open-rpc/openrpc-linter
+```
+
+The npm package installs a native binary for supported macOS, Linux, and
+Windows systems on ARM64 and x64.
+
+### Go
+
+Install the latest release with Go:
+
+```bash
+go install github.com/open-rpc/openrpc-linter@latest
+```
+
+Prebuilt binaries are also available from the
+[GitHub releases page](https://github.com/open-rpc/openrpc-linter/releases).
+
+## Quick start
+
+The linter requires a rules file. Create one that extends the bundled
+`recommended` ruleset:
+
+```bash
+openrpc-linter init
+```
+
+This creates `rules.yml`:
+
+```yaml
+extends:
+  - recommended
+```
+
+Lint an OpenRPC document:
+
+```bash
+openrpc-linter lint openrpc.json --rules rules.yml
+```
+
+If you installed the npm package locally, run the same command with `npx`:
+
+```bash
+npx openrpc-linter lint openrpc.json --rules rules.yml
+```
+
+The linter defaults to `openrpc.json` when the document path is omitted, but it
+does not automatically discover `rules.yml`. Always pass the rules file with
+`--rules` or `-r`.
+
+## Linting and validation
+
+Linting and validation answer different questions:
+
+| Command                                         | Purpose                                              |
+| ----------------------------------------------- | ---------------------------------------------------- |
+| `openrpc-linter lint openrpc.json -r rules.yml` | Applies quality and style rules from a ruleset.      |
+| `openrpc-linter validate openrpc.json`          | Checks the document against the OpenRPC meta-schema. |
+
+Use validation to check specification conformance. Use linting to enforce the
+documentation and design conventions expected by your project.
+
+## The recommended ruleset
+
+The bundled `recommended` ruleset currently contains 23 rules: 8 errors and 15
+warnings. They fall into four broad groups:
+
+| Group                      | Examples                                                                        |
+| -------------------------- | ------------------------------------------------------------------------------- |
+| Documentation completeness | Descriptions, summaries, license information, errors, and examples              |
+| Schema quality             | Schema titles, descriptions, and explicit types or composition keywords         |
+| Usability                  | Non-empty methods and examples, concise summaries, and parameter-count guidance |
+| Uniqueness                 | Method names, summaries, parameter names, error codes, and example names        |
+
+The source of truth is the
+[recommended ruleset](https://github.com/open-rpc/openrpc-linter/blob/main/rules/defaults/recommended.yaml).
+
+## Understanding the results
+
+Text output groups violations by method, schema, descriptor, tag, or top-level
+section. Each result includes a document path, severity, message, and rule ID.
+
+| Severity | Behavior                                                         |
+| -------- | ---------------------------------------------------------------- |
+| `error`  | Reports the violation and makes `lint` exit non-zero.            |
+| `warn`   | Reports the violation without independently failing the command. |
+| `info`   | Reports informational guidance.                                  |
+| `ignore` | Disables the rule.                                               |
+
+For automation, request a flat JSON result:
+
+```bash
+openrpc-linter lint openrpc.json -r rules.yml --format json
+```
+
+## Try a document with known issues
+
+The linter repository includes a
+[fixture with intentional duplicate values](https://github.com/open-rpc/openrpc-linter/blob/main/e2e/fixtures/unique/bad-document.json).
+From a clone of that repository, run:
+
+```bash
+openrpc-linter lint \
+  e2e/fixtures/unique/bad-document.json \
+  --rules rules/defaults/recommended.yaml
+```
+
+With release `v0.0.17`, the command exits non-zero and reports:
+
+```text
+e2e/fixtures/unique/bad-document.json
+
+4 errors, 10 warnings found in 8 rules
+
+  path                                     level    message                                      rule
+
+getBalance
+  methods[0].errors[0].description         warning  missing field 'description'                  error-description
+  methods[0].errors[1].code                error    Duplicate value 1001                         unique-error-codes-per-method
+  methods[0].errors[1].description         warning  missing field 'description'                  error-description
+  methods[0].examples[1].name              error    Duplicate value "basic-request"              unique-example-names-per-method
+  methods[0].params[0].schema.description  warning  missing field 'description'                  schema-description
+    param: "accountId"
+    schema: "Account ID"
+  methods[0].params[1].name                error    Duplicate value "accountId"                  unique-param-names-per-method
+    param: "accountId"
+  methods[0].params[1].schema.description  warning  missing field 'description'                  schema-description
+    param: "accountId"
+    schema: "Account ID (optional)"
+  methods[0].result.schema.description     warning  missing field 'description'                  schema-description
+    schema: "Balance"
+  methods[1].errors[0].description         warning  missing field 'description'                  error-description
+  methods[1].name                          error    Duplicate value "getBalance"                  unique-method-names
+  methods[1].params[0].schema.description  warning  missing field 'description'                  schema-description
+    param: "accountId"
+    schema: "Account ID"
+  methods[1].result.schema.description     warning  missing field 'description'                  schema-description
+    schema: "Balance"
+  methods[1].summary                       warning  Duplicate value "Fetch account balance"      unique-method-summary
+
+info
+  info.license                             warning  missing field 'license'                      info-license
+
+4 errors, 10 warnings found in 8 rules
+```
+
+This run demonstrates that a fixture designed for uniqueness failures can also
+reveal documentation-quality issues when checked against the complete
+recommended ruleset. Exact findings can change as that ruleset evolves.
+
+## Customize the recommended rules
+
+Extend `recommended`, override rules by ID, and add project-specific rules in
+the same file:
+
+```yaml
+extends:
+  - recommended
+
+rules:
+  info-license:
+    severity: ignore
+
+  method-summary:
+    severity: error
+
+  method-name-prefix:
+    description: Method names must begin with rpc_
+    given: $.methods[*].name
+    severity: error
+    then:
+      function: schema
+      functionOptions:
+        type: string
+        pattern: "^rpc_"
+```
+
+See [Writing Rules and Functions](/docs/linter/rules-and-functions) for the
+rule format, selector behavior, built-in functions, and the contributor path
+for adding a new function.
+
+## Add the linter to CI
+
+Add a script to `package.json`:
+
+```json
+{
+  "scripts": {
+    "lint:openrpc": "openrpc-linter lint openrpc.json -r rules.yml"
+  }
+}
+```
+
+Then run it in CI after installing dependencies:
+
+```yaml
+- run: npm ci
+- run: npm run lint:openrpc
+```
+
+## Current boundaries
+
+- OpenRPC documents must be JSON.
+- `lint` currently resolves internal `$ref` references. External references
+  remain unresolved.
+- A rules file must define `extends`, `rules`, or both.
+- `recommended` is currently the only bundled ruleset extension.
+- New executable rule functions must be compiled into the linter; YAML rules
+  can only use registered functions.
+
+The linter is currently pre-1.0. Pin a release in CI when reproducible behavior
+is important.
