@@ -82,8 +82,9 @@ documentation and design conventions expected by your project.
 
 ## The recommended ruleset
 
-The bundled `recommended` ruleset currently contains 23 rules: 8 errors and 15
-warnings. They fall into four broad groups:
+The bundled `recommended` ruleset checks common documentation and API design
+issues, using errors for stricter requirements and warnings for suggested
+improvements. Its rules fall into four broad groups:
 
 | Group                      | Examples                                                                        |
 | -------------------------- | ------------------------------------------------------------------------------- |
@@ -217,6 +218,55 @@ Then run it in CI after installing dependencies:
 - run: npm ci
 - run: npm run lint:openrpc
 ```
+
+### GitHub Actions
+
+Commit `openrpc.json`, `rules.yml`, `package.json`, and `package-lock.json` to
+your repository. The package files should include the linter development
+dependency and the `lint:openrpc` script shown above.
+
+Create `.github/workflows/lint-openrpc.yml`:
+
+```yaml
+name: Lint OpenRPC
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint-openrpc:
+    name: Lint OpenRPC
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint the OpenRPC document
+        run: npm run lint:openrpc
+```
+
+The workflow runs on pushes and pull requests. Lint errors fail the job;
+warnings and informational findings appear in the logs without failing it.
+If your document or rules file lives elsewhere, update the paths in the
+`lint:openrpc` script.
+
+This example uses GitHub's
+[`checkout`](https://github.com/actions/checkout) and
+[`setup-node`](https://github.com/actions/setup-node) actions to prepare the
+runner before installing and running the linter.
 
 ## Current boundaries
 
