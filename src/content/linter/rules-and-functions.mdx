@@ -1,0 +1,282 @@
+---
+title: Writing Rules and Functions | OpenRPC Linter
+description: Build custom OpenRPC Linter rules and contribute new rule functions.
+---
+
+# Writing Rules and Functions
+
+Rules are declarative YAML policies. Functions are compiled Go implementations
+that evaluate the document values selected by those policies. Most projects can
+create useful rules with the built-in functions and do not need to add Go code.
+
+## Anatomy of a rule
+
+```yaml
+rules:
+  method-summary-length:
+    description: Method summaries should be concise
+    given: $.methods[*].summary
+    severity: warn
+    then:
+      function: schema
+      functionOptions:
+        type: string
+        maxLength: 120
+```
+
+| Field                  | Purpose                                               |
+| ---------------------- | ----------------------------------------------------- |
+| `description`          | Explains the policy enforced by the rule.             |
+| `given`                | Selects document locations using JSONPath.            |
+| `severity`             | Sets `error`, `warn`, `info`, or `ignore`.            |
+| `then.function`        | Selects a function registered in the compiled linter. |
+| `then.functionOptions` | Supplies function-specific configuration.             |
+
+## How a rule runs
+
+For each rule, the linter:
+
+1. Parses `given` as JSONPath.
+2. Converts the matches into normalized targets.
+3. Creates one instance of the configured function.
+4. Runs that function once for every selected target.
+5. Adds the rule ID, configured severity, and human-readable location.
+6. Sends the results to the text or JSON reporter.
+
+Selection and reporting live outside the function. Function implementations can
+focus on evaluating one normalized target at a time.
+
+## Selecting targets with `given`
+
+The shape of a JSONPath determines what the function receives:
+
+| Mode             | Example                    | Behavior                                                                         |
+| ---------------- | -------------------------- | -------------------------------------------------------------------------------- |
+| Field            | `$.methods[*].description` | Selects each parent and records whether the named field exists.                  |
+| Value            | `$.methods`                | Passes the selected array or value directly.                                     |
+| Descendant field | `$..schema.description`    | Uses the OpenRPC meta-schema index to find candidates, including missing fields. |
+
+Choose a field path when presence matters. Choose a value path when validating
+the shape, length, or uniqueness of an existing value.
+
+## Built-in functions
+
+### `truthy`
+
+Use `truthy` to require a selected field to exist and contain a non-empty value:
+
+```yaml
+rules:
+  method-description:
+    given: $.methods[*].description
+    severity: error
+    then:
+      function: truthy
+```
+
+`nil`, an empty string, and the string `"null"` fail this check.
+
+### `schema`
+
+Use `schema` for constraints expressible with JSON Schema:
+
+```yaml
+rules:
+  method-summary-length:
+    given: $.methods[*].summary
+    severity: warn
+    then:
+      function: schema
+      functionOptions:
+        type: string
+        maxLength: 120
+```
+
+`functionOptions` is the schema itself. Missing fields are skipped, so pair
+`schema` with a `truthy` rule when the field is also required.
+
+### `unique`
+
+Use `unique` for primitive values that must not repeat:
+
+```yaml
+rules:
+  unique-param-names-per-method:
+    given: $.methods[*].params[*].name
+    severity: error
+    then:
+      function: unique
+      functionOptions:
+        scope: $.methods[*]
+```
+
+Without `scope`, values are compared globally. With `scope`, values are compared
+inside the longest matching scope. Strings, numbers, booleans, and null are
+supported.
+
+## Decide whether a new function is necessary
+
+Before adding Go code, check whether the requirement can use:
+
+1. `schema` for types, patterns, lengths, ranges, arrays, or object shape.
+2. `truthy` for required non-empty fields.
+3. `unique` for duplicate detection, optionally within a scope.
+
+A new function is appropriate for a check that needs bespoke computation or a
+relationship between document locations that these functions cannot express.
+
+## Function interface
+
+Every function implements `RuleFunction`:
+
+```go
+type RuleFunction interface {
+    RunRule(
+        value interface{},
+        context RuleFunctionContext,
+    ) []RuleFunctionResult
+}
+```
+
+`value` is the selected value for the current invocation. The context exposes
+the rule, rule ID, original document, internally resolved document, normalized
+target, and target path.
+
+A function returns no results when the value passes. A result with a message is
+a violation:
+
+```go
+return []types.RuleFunctionResult{
+    {
+        Message: "value does not satisfy the rule",
+    },
+}
+```
+
+The executor fills in the selected path when the function does not provide one,
+then applies the configured severity and rule ID.
+
+## Add a function
+
+The following deliberately small example illustrates the contributor workflow.
+The same prefix check can already be expressed with `schema`, so it would not by
+itself justify a new built-in function.
+
+Create a function in the `functions` package:
+
+```go
+package functions
+
+import (
+    "fmt"
+    "strings"
+
+    "github.com/open-rpc/openrpc-linter/types"
+)
+
+type StartsWithRule struct{}
+
+func (r *StartsWithRule) RunRule(
+    value interface{},
+    context types.RuleFunctionContext,
+) []types.RuleFunctionResult {
+    target := context.Target
+
+    // Let a separate truthy rule report missing fields.
+    if target != nil && target.Field != "" && !target.Exists {
+        return nil
+    }
+
+    prefix, ok := context.Rule.Then.FunctionOptions["prefix"].(string)
+    if !ok || prefix == "" {
+        return []types.RuleFunctionResult{{
+            Message: "startsWith requires a non-empty prefix option",
+        }}
+    }
+
+    text, ok := value.(string)
+    if !ok {
+        return []types.RuleFunctionResult{{
+            Message: "startsWith requires a string value",
+        }}
+    }
+
+    if strings.HasPrefix(text, prefix) {
+        return nil
+    }
+
+    return []types.RuleFunctionResult{{
+        Message: fmt.Sprintf("value must start with %q", prefix),
+    }}
+}
+```
+
+### Register the function
+
+Add one factory entry to `RegisterFunctions`:
+
+```go
+FunctionRegistry["startsWith"] = func() types.RuleFunction {
+    return &StartsWithRule{}
+}
+```
+
+The YAML function name must match this registry key exactly. The factory creates
+one function instance per rule, which lets stateful implementations such as
+`unique` retain state across that rule's targets without leaking it into another
+rule.
+
+No deeper registry knowledge is required to contribute a function.
+
+### Build a rule on the function
+
+```yaml
+rules:
+  method-name-prefix:
+    description: Method names must begin with rpc_
+    given: $.methods[*].name
+    severity: error
+    then:
+      function: startsWith
+      functionOptions:
+        prefix: rpc_
+```
+
+An unregistered function name produces an `unknown function` error.
+
+## Test a function contribution
+
+Tests should cover:
+
+- A passing value produces no violation.
+- A failing value produces a useful message.
+- Missing fields behave intentionally.
+- Invalid or missing options produce useful diagnostics.
+- Stateful checks do not leak data between rules.
+- An end-to-end YAML rule selects and reports the expected document path.
+
+Run the test suite:
+
+```bash
+go test ./...
+```
+
+## Propose a recommended rule
+
+Adding a function does not enable it automatically. Project-specific rules can
+use any registered function without changing the bundled preset.
+
+To propose a rule for all users:
+
+1. Add it to
+   [`rules/defaults/recommended.yaml`](https://github.com/open-rpc/openrpc-linter/blob/main/rules/defaults/recommended.yaml).
+2. Choose an intentional default severity.
+3. Add passing and failing end-to-end scenarios.
+4. Document the policy, selected locations, and remediation.
+
+The relevant implementation references are
+[`types/types.go`](https://github.com/open-rpc/openrpc-linter/blob/main/types/types.go),
+[`rules/rules.go`](https://github.com/open-rpc/openrpc-linter/blob/main/rules/rules.go),
+[`selector/select.go`](https://github.com/open-rpc/openrpc-linter/blob/main/selector/select.go),
+and
+[`functions/registry.go`](https://github.com/open-rpc/openrpc-linter/blob/main/functions/registry.go).
