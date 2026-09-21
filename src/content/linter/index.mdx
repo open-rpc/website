@@ -202,28 +202,10 @@ for adding a new function.
 
 ## Add the linter to CI
 
-Add a script to `package.json`:
-
-```json
-{
-  "scripts": {
-    "lint:openrpc": "openrpc-linter lint openrpc.json -r rules.yml"
-  }
-}
-```
-
-Then run it in CI after installing dependencies:
-
-```yaml
-- run: npm ci
-- run: npm run lint:openrpc
-```
-
 ### GitHub Actions
 
 Commit `openrpc.json`, `rules.yml`, `package.json`, and `package-lock.json` to
 your repository. The package files should include the linter development
-dependency and the `lint:openrpc` script shown above.
 
 Create `.github/workflows/lint-openrpc.yml`:
 
@@ -234,34 +216,20 @@ on:
   push:
   pull_request:
 
-permissions:
-  contents: read
-
 jobs:
-  lint-openrpc:
-    name: Lint OpenRPC
+  lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v7
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: "24"
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint the OpenRPC document
-        run: npm run lint:openrpc
+      - uses: actions/checkout@v4
+      # Run `npx @open-rpc/openrpc-linter init if you don't have custom rules.
+      # pin a release via npx @open-rpc/openrpc-linter@x.x.x
+      # - run: npx @open-rpc/openrpc-linter init
+      - run: npx @open-rpc/openrpc-linter lint openrpc.json -r rules.yml
 ```
 
 The workflow runs on pushes and pull requests. Lint errors fail the job;
 warnings and informational findings appear in the logs without failing it.
-If your document or rules file lives elsewhere, update the paths in the
-`lint:openrpc` script.
+If your document or rules file lives else where update the paths in the github actions.
 
 This example uses GitHub's
 [`checkout`](https://github.com/actions/checkout) and
@@ -278,5 +246,4 @@ runner before installing and running the linter.
 - New executable rule functions must be compiled into the linter; YAML rules
   can only use registered functions.
 
-The linter is currently pre-1.0. Pin a release in CI when reproducible behavior
-is important.
+Pin a release in CI when reproducible behavior is important.
