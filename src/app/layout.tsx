@@ -73,7 +73,7 @@ export default async function RootLayout({
         <Layout
           navbar={navbar}
           pageMap={await getPageMap()}
-          docsRepositoryBase="https://github.com/open-rpc/website"
+          docsRepositoryBase="https://github.com/open-rpc/website/tree/master"
           footer={footer}
         >
           {children}
