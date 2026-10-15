@@ -115,6 +115,15 @@
   text-wrap: balance;
 }
 
+.blog-title-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.blog-title-link:hover {
+  text-decoration: none;
+}
+
 .blog-dek {
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 20px;

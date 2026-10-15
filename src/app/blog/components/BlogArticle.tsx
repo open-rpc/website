@@ -7,7 +7,11 @@ export function BlogArticle({ post }: { post: BlogPost }) {
   return (
     <article id={post.slug} className="blog-article">
       <header className="mb-10 text-center">
-        <h1 className="blog-title">{post.title}</h1>
+        <h1 className="blog-title">
+          <Link href={`/blog/${post.slug}`} className="blog-title-link">
+            {post.title}
+          </Link>
+        </h1>
         {post.description ? (
           <p className="blog-dek">{post.description}</p>
         ) : null}
