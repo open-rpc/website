@@ -7,7 +7,6 @@ export function BlogArticle({ post }: { post: BlogPost }) {
   return (
     <article id={post.slug} className="blog-article">
       <header className="mb-10 text-center">
-        <p className="blog-kicker">{post.author}</p>
         <h1 className="blog-title">{post.title}</h1>
         {post.description ? (
           <p className="blog-dek">{post.description}</p>
