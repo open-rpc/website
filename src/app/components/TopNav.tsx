@@ -7,7 +7,6 @@ import { useState } from 'react';
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Docs', href: '/docs' },
-  { name: 'Blog', href: '/blog' },
   { name: 'Playground', href: 'https://playground.open-rpc.org' },
   { name: 'GitHub', href: 'https://github.com/open-rpc', external: true },
   { name: 'Twitter', href: 'https://twitter.com/open_rpc', external: true },
