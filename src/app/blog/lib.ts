@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { siteConfig } from '../config/site';
 
 export interface BlogPost {
   slug: string;
@@ -75,4 +76,16 @@ export function formatDate(iso: string): string {
 export function readingTime(content: string): number {
   const words = content.split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.round(words / 200));
+}
+
+// First Markdown image in the post body, for link-sharing (og:image).
+export function firstImage(content: string): string | null {
+  const match = content.match(/!\[[^\]]*\]\(([^)\s]+)(?:\s+["'][^"']*["'])?\)/);
+  return match ? match[1] : null;
+}
+
+export function absoluteUrl(src: string): string {
+  if (/^https?:\/\//.test(src)) return src;
+  const base = siteConfig.url.replace(/\/$/, '');
+  return `${base}${src.startsWith('/') ? src : `/${src}`}`;
 }
