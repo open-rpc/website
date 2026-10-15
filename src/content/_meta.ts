@@ -7,4 +7,8 @@ export default {
   developers: "Developers",
   learn: "Learn More",
   sponsors: "Sponsors",
+  blog: {
+    title: "Blog",
+    href: "/blog",
+  },
 };

@@ -1,7 +1,9 @@
+import { SiteLayout } from '../components/chrome/SiteLayout';
+
 export default function DocsLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <>{children}</>;
+  return <SiteLayout>{children}</SiteLayout>;
 }

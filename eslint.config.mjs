@@ -17,6 +17,7 @@ export default defineConfig([
     '.next/**',
     'out/**',
     'build/**',
+    'public/_pagefind/**',
     'next-env.d.ts',
   ]),
 ]);
