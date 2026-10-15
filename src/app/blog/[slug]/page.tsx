@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BlogArticle } from '../components/BlogArticle';
-import { getAllPosts, getPost } from '../lib';
+import { absoluteUrl, firstImage, getAllPosts, getPost } from '../lib';
 
 export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
@@ -15,9 +15,22 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = getPost(slug);
   if (!post) return {};
+  const src = firstImage(post.content);
+  const images = src ? [absoluteUrl(src)] : [];
   return {
     title: `${post.title} | Engineering thoughts`,
     description: post.description,
+    openGraph: {
+      title: `${post.title} | Engineering thoughts`,
+      description: post.description,
+      images,
+    },
+    twitter: {
+      card: images.length > 0 ? 'summary_large_image' : 'summary',
+      title: `${post.title} | Engineering thoughts`,
+      description: post.description,
+      images,
+    },
   };
 }
 
