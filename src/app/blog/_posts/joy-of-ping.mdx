@@ -1,0 +1,447 @@
+---
+title: "I still remember the joy of typing ping()"
+description: "From Java RMI ping() and pong() to JSON-RPC across blockchains and AI agents — methods, parameters, results, OpenRPC, and what's next."
+date: "2026-10-02"
+author: "zcstarr"
+---
+
+I still remember the joy of typing `ping()` and hearing back `pong` from a distant machine.
+
+This was my first introduction to [RPC (Remote Procedure Calls)](https://en.wikipedia.org/wiki/Remote_procedure_call) using [Java RMI, or Remote Method Invocation](https://en.wikipedia.org/wiki/Java_remote_method_invocation). I was building a test distributed system, and we needed a way to send messages to any machine on the network and, sometimes, receive messages back.
+
+What was cool about this was that we didn't need to worry about **how** the messages got there. We could just focus on the functionality.
+
+There was no `POST http://192.168.1.1` in our vocabulary. Instead, it was: call this method, `ping()`, and if someone else calls `ping()`, respond by sending them a `pong()`.
+
+The magic of this has always stuck with me.
+
+## What is RPC?
+
+This is RPC: a transport agnostic way of writing programs that can send messages between one another, where those messages look like function calls.
+
+![RPC Example](/assets/blog/rpc-example.png)
+
+This mode of thinking makes it possible to conceptualize distributed and decentralized programs communicating over a network much like you would think about functions communicating inside any other program.
+
+That first program I wrote was a lifetime ago, and Java based RPC systems are no longer the first thing most developers encounter.
+
+Today, technologies you may see around RPC include [JSON-RPC](https://www.jsonrpc.org), [gRPC](https://grpc.io), [Apache Thrift](https://thrift.apache.org), [tRPC](https://trpc.io), and [Cap'n Proto](https://capnproto.org).
+
+All of these take different approaches to communicating which method is being called, which parameters are being sent, and how that data should be encoded.
+
+Thrift, gRPC, and Cap'n Proto tend to favor compact serialization formats and performance over human readability. JSON-RPC goes in the opposite direction and has a request format that you can read directly.
+
+You'll sometimes encounter gRPC or other RPC technologies in blockchain systems, but JSON-RPC is the most common across blockchain infrastructure and is increasingly showing up in AI systems involving clients, nodes, peers, tools, and agents.
+
+I like to think that part of JSON-RPC's popularity comes from its accessibility and transparency. You can use it over HTTP, inspect the request directly, copy it into browser tools, and understand roughly what is happening without needing a specialized decoder.
+
+So for the rest of this article, we're going to dive into JSON-RPC.
+
+You'll find versions of this pattern across systems like Bitcoin, Ethereum, Solana, Polkadot, and Base, as well as newer AI protocols and agent systems.
+
+## JSON-RPC: what is it, though?
+
+[JSON-RPC](https://www.jsonrpc.org/specification) is a lightweight Remote Procedure Call protocol.
+
+It uses JSON to describe requests and responses.
+
+The goal of an RPC system is usually to make some functionality accessible across a boundary. That boundary could be another process, another machine, or another network entirely.
+
+One of the nice things about JSON-RPC is that it doesn't restrict the transport that you can use.
+
+![transports](/assets/blog/transports.png)
+
+The transport is not the important part. The important part is that the messages follow the JSON-RPC format.
+
+A normal request includes an `id`. When the server sends a response, that same `id` comes back so the caller can associate the response with the original request.
+
+If a request does **not** include an `id`, it is considered a notification. A notification does not receive a response.
+
+JSON-RPC also doesn't require that one machine is *always* the client and another is *always* the server. Those roles describe who is making a request and who is answering it at a particular moment. In fact, it's naturally peer-leaning; it's up to the system to define how the roles work.
+
+In practice, most systems still have a well-defined client and server, but the protocol itself is flexible enough to support more interesting communication patterns.
+
+### A look at a JSON-RPC request
+
+Here is a request asking an Ethereum node for the balance of an account:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "eth_getBalance",
+  "params": [
+    "0xfe3b557e8fb62b89f4916b721be55ceb828dbd73",
+    "latest"
+  ],
+  "id": 1
+}
+```
+
+### A look at a JSON-RPC response
+
+And here is the corresponding response:
+
+```json
+{
+  "id": 1,
+  "jsonrpc": "2.0",
+  "result": "0x1cfe56f3795885980000"
+}
+```
+
+The important thing to notice is how closely this resembles calling a function.
+
+Conceptually, we're doing something like:
+
+![Remote Pattern](/assets/blog/remote-pattern.png)
+
+```text
+eth_getBalance(address, "latest")
+```
+
+The request goes to an Ethereum client, much like a blockchain wallet would send it, and we get a result back.
+
+The transport might be HTTP. It might be something else.
+
+From the application's point of view, though, the important operation is:
+
+```text
+method(parameters) -> result
+```
+
+That's the RPC mental model.
+
+## Understanding JSON-RPC APIs
+
+Okay, so if JSON-RPC is used everywhere, how do we know which methods a particular node or system supports?
+
+Many blockchains have infrastructure providers commonly referred to as RPC providers. Providers such as QuickNode, Infura, and others expose endpoints that applications can use to communicate with blockchain nodes.
+
+JSON-RPC is typically a single path request format, so unlike HTTP, there's only one route, and the method itself is how the receiving entity/node knows how to respond.
+
+So an endpoint alone doesn't tell us very much.
+
+**We still need to know**:
+
+- Which methods exist?
+- Which parameters do they accept?
+- Which parameters are required?
+- What types should those parameters have?
+- What does the result look like?
+- What errors might come back?
+
+This is the point where API descriptions become useful.
+
+Many projects in the JSON-RPC ecosystem use [OpenRPC](https://open-rpc.org).
+
+OpenRPC is a description language for JSON-RPC APIs. It gives developers and tools a structured way to describe the interfaces exposed by clients, wallets, nodes, and infrastructure providers.
+
+For example, take Ethereum's `eth_getBalance` method.
+
+The [Ethereum Execution APIs](https://ethereum.github.io/execution-apis/api/methods/eth_getBalance) describe the method roughly like this:
+
+```json
+{
+  "name": "eth_getBalance",
+  "params": [
+    {
+      "name": "Address",
+      "required": true,
+      "schema": {
+        "pattern": "^0x[0-9a-fA-F]{40}$",
+        "title": "hex encoded address",
+        "type": "string"
+      }
+    },
+    {
+      "name": "Block",
+      "required": true,
+      "schema": {
+        "anyOf": [
+          {
+            "pattern": "^0x(0|[1-9a-f][0-9a-f]*)$",
+            "title": "Block number",
+            "type": "string"
+          },
+          {
+            "enum": [
+              "earliest",
+              "finalized",
+              "safe",
+              "latest",
+              "pending"
+            ],
+            "title": "Block tag",
+            "type": "string"
+          },
+          {
+            "pattern": "^0x[0-9a-f]{64}$",
+            "title": "Block hash",
+            "type": "string"
+          }
+        ],
+        "title": "Block number, tag, or block hash"
+      }
+    }
+  ],
+  "result": {
+    "name": "Balance",
+    "schema": {
+      "pattern": "^0x(0|[1-9a-f][0-9a-f]*)$",
+      "title": "hex encoded unsigned integer",
+      "type": "string"
+    }
+  },
+  "summary": "Returns the balance of the account of given address."
+}
+```
+
+They define the schema [here](https://github.com/ethereum/execution-apis/blob/assembled-spec/refs-openrpc.json#L6994)
+
+There's a lot there, but the important part is that the document is telling us what to expect.
+
+It does that using [JSON Schema](https://json-schema.org).
+
+JSON Schema gives us a way to describe what JSON data is allowed to look like. It can tell us that a value must be a string, that it must match a particular pattern, that only certain values are accepted, or that a field is required.
+
+So instead of documentation saying:
+
+> Pass an address and some kind of block identifier.
+
+It can describe exactly what those values are allowed to be.
+
+For this method, a live request might look like this:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "eth_getBalance",
+  "params": [
+    "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "latest"
+  ],
+  "id": 1
+}
+```
+
+And the response might look like:
+
+```json
+{
+  "id": 1,
+  "jsonrpc": "2.0",
+  "result": "0x21e0c0013070adc0000"
+}
+```
+
+Now we can put it all together.
+
+- The OpenRPC description tells us which method exists.
+- The JSON Schema tells us which parameters are valid.
+- We make the JSON-RPC request.
+- And the result comes back in the format the API described.
+
+That makes the API understandable not only by a person reading documentation, but also by tools.
+
+A tool can potentially use the same information to generate documentation, validate requests, build clients, create test cases, or expose an interactive API explorer.
+
+## Try the request yourself
+
+You can make the request directly with `curl`.
+
+Replace the endpoint with your own RPC endpoint, or run a local Ethereum devnet and use one of its test addresses.
+
+One easy option is [Foundry's Anvil](https://www.getfoundry.sh/introduction/installation).
+
+Here's also a quick [skill](https://gist.github.com/zcstarr/842a8af9312a25bb6432121585ca165e) for launching your own Ethereum devnet and testing it live.
+
+```shell
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "method": "eth_getBalance",
+    "params": [
+      "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+      "latest"
+    ],
+    "id": 1
+  }' \
+  http://localhost:8545
+```
+
+Once you've tried this, the pattern becomes much easier to recognize.
+
+- You're sending a method name and some parameters.
+- The remote system performs the operation.
+- You receive a result.
+
+## Recognizing the pattern across blockchains
+
+Now that we have an introduction to the pattern, we can start recognizing it across other blockchain systems.
+
+Bitcoin is a good example.
+
+The Bitcoin RPC documentation includes a `getblock` method:
+
+<https://developer.bitcoin.org/reference/rpc/getblock.html>
+
+A request can look something like:
+
+```shell
+curl \
+  --data-binary '{
+    "jsonrpc": "1.0",
+    "id": "curltest",
+    "method": "getblock",
+    "params": [
+      "00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09"
+    ]
+  }' \
+  -H 'content-type: application/json;' \
+  https://bitcoin-mainnet.gateway.tatum.io
+```
+
+The exact conventions are a little different from the Ethereum example, but the mental model should now look familiar.
+
+There is a method:
+
+```text
+getblock
+```
+
+There are parameters:
+
+```text
+block hash
+```
+
+And there is a result.
+
+A response from a Bitcoin node might contain information like:
+
+```json
+{
+  "result": {
+    "hash": "00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09",
+    "confirmations": 968478,
+    "height": 1000,
+    "version": 1,
+    "versionHex": "00000001",
+    "merkleroot": "fe28050b93faea61fa88c4c630f0e1f0a1c24d0082dd0e10d369e13212128f33",
+    "time": 1232346882,
+    "mediantime": 1232344831,
+    "nonce": 2595206198,
+    "bits": "1d00ffff",
+    "target": "00000000ffff0000000000000000000000000000000000000000000000000000",
+    "difficulty": 1,
+    "nTx": 1,
+    "previousblockhash": "0000000008e647742775a230787d66fdf92c46a48c896bfbc85cdc8acc67e87d",
+    "nextblockhash": "00000000a2887344f8db859e372e7e4bc26b23b9de340f725afbf2edb265b4c6"
+  },
+  "id": "curltest",
+  "jsonrpc": "1.0",
+  "error": null
+}
+```
+
+You don't need to memorize the fields.
+
+The useful thing is recognizing the shape.
+
+When you encounter an RPC endpoint, you can usually start by asking:
+
+1. What methods does it expose?
+2. What parameters does each method accept?
+3. Is there a schema describing those parameters?
+4. What does the result look like?
+5. How do I send the request?
+
+Once those questions are answered, an unfamiliar RPC API becomes much less mysterious.
+
+## The useful mental model
+
+If there is one thing to take away when you think about JSON-RPC, it is this:
+
+The network is important, but JSON-RPC lets you temporarily think past the transport layer and think in methods, parameters, and responses.
+
+- You have a method.
+- You have a set of acceptable parameters.
+- You send a request.
+- You get a structured result.
+
+The endpoint might be running on your laptop, inside a data center, behind a blockchain infrastructure provider, or on another machine somewhere across the world.
+
+The RPC abstraction lets your program interact with it using something that still feels like calling a function.
+
+That is the thing that caught me with `ping()` and `pong()` all those years ago and the thing that still gets me excited about the format today!
+
+## Where RPC goes next
+
+JSON-RPC's simplicity is one of its greatest strengths, but it also means that some concerns and balances fall a bit short.
+
+Three areas are currently at the edge right now: **authorization, streaming, and performance**.
+
+### Authorization
+
+JSON-RPC defines the shape of the message, but it doesn't define a universal authorization system. As people use JSON-RPC beyond blockchain applications and into systems that are more user-defined, people are looking for better ways to define security.
+
+When JSON-RPC is transported over HTTPS, a common solution is to put credentials in the HTTP layer, for example, in an authorization header or API key. This is what you'll typically find in blockchain systems.
+
+That works, but different systems make different decisions about what the credential grants access to.
+
+For increasingly powerful RPC systems—particularly systems that can control wallets, agents, tools, or user resources—it becomes useful to think about authorization at a more granular level.
+
+Instead of asking only:
+
+> Is this client authenticated?
+
+We may increasingly want to ask:
+
+> Which methods is this client allowed to call?
+
+That distinction becomes especially important when RPC is used for systems that can perform actions on behalf of a user. We've had discussions about this within OpenRPC, but haven't really settled on anything we think others should use definitively.
+
+A lot of this comes down to how you'd like to communicate user roles or advertise capabilities to other systems. There are a lot of trade offs and expectations when it comes to access that are tricky to get just right. I think that's partially why there is no OAuth 3.0.
+
+### Streaming
+
+Traditional JSON-RPC has this kind of lightweight, implicit call and response, client-server relationship baked in, where there's an expectation that a request ends.
+
+On different transports, that's not always the case, and furthermore, what does it look like if you have a long running request that you expect to continually receive data on?
+
+This might be something like pub/sub, an event stream, or something where you expect incremental responses that correspond to the same request id. So it doesn't violate the JSON-RPC 2.0 protocol.
+
+There isn't one universal answer yet, which makes this an interesting design space.
+
+### Performance
+
+JSON is readable, portable, and easy to inspect. However, it is hard to make it as performant as sending binary data. By this, I mean if you send binary data over the wire with your JSON, you might end up [base64 encoding](https://en.wikipedia.org/wiki/Base64) the data, which can make the data 3x as large, for example.
+
+Other protocols use binary data and message or interchange formats that produce fixed, predictable sizes or variable sizes that you're able to automatically allocate memory for.
+
+This is important because with JSON you typically have to serialize or deserialize the entire JSON object before you can start using it. Where as in other formats, you can skip data; you can only deserialize or read the portion you care about, which gives you a lot of performance advantages.
+
+One active area of investigation is using [Flatbuffers](https://flatbuffers.dev) or [Msgpack](https://msgpack.dev) to somehow create an encoding for the underlying JSON data to make it possible to do some of the tricks that these formats allow you to do natively, which is to minimize the amount of memory needed and increase read access to the data.
+
+In high performance systems, that predictability can enable techniques such as preallocation and, in some cases, fewer memory copies.
+
+JSON is less rigid about representation and size, so it doesn't naturally receive all of those advantages.
+
+### To Recap
+
+JSON-RPC is an awesome powerhouse of the blockchain and AI industries, and we're really only scratching the surface of where it can be used and how we can improve the SOTA to get better performance and reliability.
+
+JSON-RPC makes it possible to think about using distributed and decentralized systems in ways that feel local, by moving the transport layer to the background and the functional interface for interacting with them to the foreground. This shift helps us imagine systems that can talk to each other naturally.
+
+We're always excited to talk JSON-RPC at OpenRPC, and we like to discuss ways we can make things better. Please check out our specification repo; we're happy to talk JSON-RPC and answer any questions you might have about your APIs.
+
+## Next Steps
+
+- Explore [JSON-RPC](https://json-rpc.org)
+- Explore [JSON Schema](https://json-schema.org)
+- Explore [OpenRPC](https://open-rpc.org)
+- Read the [OpenRPC specification](http://spec.open-rpc.org#introduction)
+- Explore [Cap'n Proto](https://capnproto.org/)
+- Explore [gRPC](https://grpc.io/)
+- Read about [Protocol Buffers](https://protobuf.dev/)
