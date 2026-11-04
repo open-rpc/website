@@ -1,0 +1,365 @@
+---
+title: OpenRPC Test Coverage | Test Coverage & CI integration for JavaScript and TypeScript
+description: Test a live JSON-RPC API against its OpenRPC document and enforce contract coverage in JavaScript and TypeScript CI workflows.
+---
+
+# What is OpenRPC Test Coverage?
+
+Even after writing your OpenRPC document, you'll want to check that it matches
+an actual API. [`@open-rpc/test-coverage`](https://github.com/open-rpc/test-coverage)
+helps you do just that.
+
+## How it works
+
+- Generates fake data from your method parameter schemas when no examples are available.
+- Uses example pairings when you've provided them.
+- Makes JSON-RPC calls using the `servers[]` defined in your OpenRPC document.
+- Reports the coverage results.
+- Shows errors and results to help you track down and fix inconsistencies.
+
+## Test coverage in CI
+
+You don't have to wait for someone to spot a mismatch. Run these checks alongside
+your JavaScript or TypeScript tests in CI, and catch contract regressions before
+they make it into your main branch.
+
+This guide follows the runnable
+[example-test-coverage repository](https://github.com/zcstarr/example-test-coverage),
+a small math API with an OpenRPC 1.4.1 document and a GitHub Actions workflow.
+The example uses JavaScript ES modules and Node.js 24. TypeScript projects can
+use the same JavaScript coverage runner against their compiled application.
+
+**This is API contract and method coverage, not source-code line coverage.**
+Keep your unit tests and any source coverage tooling: contract checks complement
+them rather than replace them.
+
+## Run the example locally
+
+You need Git, Node.js 24, and npm. No API keys, external service, or Bun
+installation are required. The example uses the package's Node-compatible
+library API rather than its Bun-based CLI.
+
+```bash
+git clone https://github.com/zcstarr/example-test-coverage.git
+cd example-test-coverage
+npm ci
+npm run ci
+```
+
+The CI script lints the document, runs unit and HTTP tests, and checks the live
+API against its contract. You can also run each check separately:
+
+```bash
+npm run validate:openrpc
+npm run lint:openrpc
+npm test
+npm run coverage:openrpc
+```
+
+The coverage runner starts its own HTTP server on an ephemeral loopback port
+and closes it in a `finally` block. You do not need to run `npm start` in another
+terminal or add readiness sleeps to CI.
+
+## Understand what gets tested
+
+The checked-in [`openrpc.json`](https://github.com/zcstarr/example-test-coverage/blob/main/openrpc.json)
+describes three methods:
+
+| Method          | Input source                                | Result check                                                      |
+| --------------- | ------------------------------------------- | ----------------------------------------------------------------- |
+| `math.add`      | Three documented example pairings           | Exact equality with the documented result, enforced by the runner |
+| `math.multiply` | Ten schema-generated parameter sets         | Conformance to the result schema                                  |
+| `rpc.discover`  | One generated call and one custom-rule call | Document result schema and presence of both math methods          |
+
+The built-in rules generate inputs **only for methods without examples**. They
+do not run both examples and generated inputs for the same method. The example's
+[`rules.yml`](https://github.com/zcstarr/example-test-coverage/blob/main/rules.yml)
+extends the linter's recommended rules but scopes its non-empty example rule to
+addition, so the other methods can intentionally demonstrate generated coverage.
+
+A schema-valid result is not necessarily a correct calculation. For example,
+an integer result for multiplication can satisfy the schema while containing
+the wrong number. Keep unit tests for business logic and add documented examples
+where exact expected results matter.
+
+## Add contract coverage to your project
+
+### 1. Install and pin the tools
+
+The example pins these development dependencies:
+
+```bash
+npm install --save-dev --save-exact @open-rpc/test-coverage @open-rpc/openrpc-linter
+```
+
+Commit your package manifest and lockfile so CI can install reproducibly with
+`npm ci`. See the [OpenRPC Linter guide](/docs/linter) for document validation and
+rules configuration.
+
+### 2. Connect a runner to your application
+
+Start with the example's
+[`scripts/coverage.js`](https://github.com/zcstarr/example-test-coverage/blob/main/scripts/coverage.js)
+and [`scripts/summary.js`](https://github.com/zcstarr/example-test-coverage/blob/main/scripts/summary.js).
+Adapt the server factory and document imports to your project. These files use
+ES modules; if your project uses CommonJS, use `.mjs` for both files and update
+their imports and script paths accordingly.
+
+The core library call is:
+
+```js
+import testCoverage from "@open-rpc/test-coverage";
+
+// Supply a parsed OpenRPC document whose servers entry targets your test API.
+const calls = await testCoverage({
+  openrpcDocument,
+  transport: "http",
+  reporters: ["empty"],
+});
+```
+
+#### Here are some pro tips for adapting this example
+
+That snippet gets you started, but there's a bit more to a complete runner.
+Here are a few things to keep in mind as you make the example your own:
+
+- Give the runner its own test API, clone the document, and point its `servers`
+  URL at that API. Remember to close the server when you're done, even if a
+  coverage check throws.
+- Stick with the `empty` reporter so your code gets a chance to check results
+  and save reports. In the pinned package, the `console` reporter exits the
+  process before those steps can run.
+- When a call has an `expectedResult`, use deep equality to check it against
+  the actual result. Otherwise, the package's example rule may accept a
+  different result just because it still matches the schema.
+- Make sure CI fails if any call is invalid, a documented method has no passing
+  calls, or there are no methods or calls to test. Save the reports first, then
+  set a nonzero exit code so you have something to inspect when things go wrong.
+
+Using TypeScript? Build your app before running coverage, then import the built
+server module from the runner. The runner itself can stay in JavaScript—no extra
+TypeScript runtime needed just for CI.
+
+**Keep generated calls in an isolated test environment.** Some methods can
+change data, so don't point the runner at production. Keep credentials out of
+any OpenRPC document you check into Git, too.
+
+### 3. Expose the checks as package scripts
+
+For an ES module project using the example's paths, merge these entries into
+your existing `package.json` scripts:
+
+```json
+{
+  "scripts": {
+    "validate:openrpc": "openrpc-linter validate openrpc.json",
+    "lint:openrpc": "openrpc-linter lint openrpc.json -r rules.yml",
+    "coverage:openrpc": "node scripts/coverage.js",
+    "ci": "npm run lint:openrpc && npm test && npm run coverage:openrpc"
+  }
+}
+```
+
+Keep your existing `test` command, whether it uses Node's test runner, Vitest,
+or Jest. In a TypeScript project, run your existing build command before the
+coverage step. Keep source-code coverage reports separate from the OpenRPC
+contract reports.
+
+## Add your own coverage rules
+
+Want to check something the result schema doesn't capture? Add a custom rule.
+For example, `rpc.discover` might return a schema-valid document but leave out
+methods your clients rely on. The updated example adds a rule that checks for
+both `math.add` and `math.multiply` in the discovery response.
+
+These are JavaScript coverage rules, not the document-linting rules in
+`rules.yml`. You don't need to add any special fields to your OpenRPC document.
+
+### Write the rule
+
+Create `scripts/discovery-rule.js`, following the example's
+[`DiscoveryRule`](https://github.com/zcstarr/example-test-coverage/blob/main/scripts/discovery-rule.js):
+
+```js
+export default class DiscoveryRule {
+  getTitle() {
+    return "Discovery includes the math API methods";
+  }
+
+  getCalls(openrpcDocument, method) {
+    if (method.name !== "rpc.discover") return [];
+    return [
+      {
+        title: this.getTitle(),
+        methodName: method.name,
+        params: [],
+        resultSchema: method.result.schema,
+        url: openrpcDocument.servers?.[0].url || "",
+      },
+    ];
+  }
+
+  validateCall(call) {
+    const methods = call.result?.methods;
+    call.valid =
+      !call.error &&
+      Array.isArray(methods) &&
+      ["math.add", "math.multiply"].every((name) =>
+        methods.some((method) => method?.name === name),
+      );
+    if (!call.valid) {
+      call.reason =
+        "Discovery must return methods containing math.add and math.multiply";
+    }
+    return call;
+  }
+}
+```
+
+Here's what each part does:
+
+- `getTitle()` gives the check a readable name.
+- `getCalls()` supplies requests for each documented method. Return an empty
+  array for methods you want to skip; here, we only call `rpc.discover`.
+- `validateCall()` checks the response, sets `call.valid`, and adds a
+  `call.reason` when something goes wrong. The coverage tool handles sending
+  the request—you just describe the call and decide whether it passed.
+
+In the example's pinned `@open-rpc/test-coverage@3.0.2`, `Rule` is a TypeScript
+interface, not a runtime base class. That's why this JavaScript class implements
+the expected methods rather than using `extends Rule`.
+
+Need setup, cleanup, or logging? Rules can also provide optional lifecycle hooks:
+`onBegin(options)`, `onEnd(options, calls)`, `beforeRequest(options, call)`,
+`afterRequest(options, call)`, and `afterResponse(options, call)`. This simple
+rule doesn't need them.
+
+### Register it alongside the built-in rules
+
+In `scripts/coverage.js`, import your rule and the two built-in rules, then pass
+instances to `testCoverage`:
+
+```js
+import testCoverage from "@open-rpc/test-coverage";
+import ExamplesRule from "@open-rpc/test-coverage/build/rules/examples-rule.js";
+import JsonSchemaFakerRule from "@open-rpc/test-coverage/build/rules/json-schema-faker-rule.js";
+import DiscoveryRule from "./discovery-rule.js";
+
+const calls = await testCoverage({
+  openrpcDocument,
+  transport: "http",
+  reporters: ["empty"],
+  rules: [new JsonSchemaFakerRule(), new ExamplesRule(), new DiscoveryRule()],
+});
+```
+
+**Passing `rules` replaces the defaults**, so keep `JsonSchemaFakerRule` and
+`ExamplesRule` in the list if you still want generated-input and example checks.
+The custom rule adds its own call, even though the built-in generated-input rule
+also tests `rpc.discover`.
+
+### Give it a try
+
+Run `npm run coverage:openrpc`. The updated example makes **15 live API calls**:
+3 examples, 11 generated calls, and 1 custom-rule call. Its runner also adds a
+custom-rule section to the console output, Markdown report, and GitHub Actions
+job summary. The JSON report includes individual calls and failure reasons.
+
+To see the new check fail, temporarily change the discovery response in
+`src/server.js` from `result: document` to
+`result: { ...document, methods: [] }`, then rerun coverage. That response still
+matches the result schema, but your custom rule catches the missing math
+methods. The runner saves the reports and exits nonzero, so the same CI gate
+handles custom-rule failures too. Restore the response when you're done.
+
+The example also includes
+[`test/discovery-rule.test.js`](https://github.com/zcstarr/example-test-coverage/blob/main/test/discovery-rule.test.js)
+to test the rule directly. Use that pattern to check both passing and failing
+responses as you add rules of your own.
+
+## Run in GitHub Actions
+
+The example includes a ready-to-use
+[`.github/workflows/ci.yml`](https://github.com/zcstarr/example-test-coverage/blob/main/.github/workflows/ci.yml).
+Copy it along with `.node-version` (set to `24`), your document, rules, runner,
+and package files. The workflow is:
+
+```yaml
+name: OpenRPC coverage
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - name: Validate and lint OpenRPC 1.4.1
+        run: npm run lint:openrpc
+      - name: Unit and HTTP tests
+        run: npm test
+      - name: Test the live API against its OpenRPC document
+        run: npm run coverage:openrpc
+      - name: Upload contract coverage reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: openrpc-coverage
+          path: coverage/
+          if-no-files-found: warn
+          retention-days: 14
+```
+
+The actions are pinned to commit SHAs for reproducibility. Maintain those pins
+with your normal dependency update process. No GitHub secrets or third-party
+coverage account are required.
+
+After pushing to a repository with Actions enabled, open **Actions → OpenRPC
+coverage**. To block merges on contract regressions, configure a branch
+protection rule or ruleset requiring the `coverage` job.
+
+Other CI providers can run the same package scripts. Install with `npm ci`, run
+any required build, run `npm run ci`, and configure the provider to retain
+`coverage/` as an artifact even when the coverage command fails.
+
+## Read the reports and verify the failure gate
+
+The example runner writes:
+
+- `coverage/openrpc-coverage.json`: method totals, individual calls, results,
+  and failure reasons.
+- `coverage/openrpc-summary.md`: a human-readable summary, also appended to the
+  GitHub Actions job summary when `GITHUB_STEP_SUMMARY` is available.
+
+Method coverage counts methods with **at least one passing call**. A report
+showing 100% method coverage can still contain failed calls; the separate CI
+gate requires every call to pass. The artifact upload uses `if: always()` to
+preserve reports after a failed gate, but reports cannot be uploaded if an
+earlier failure prevented their creation.
+
+Try a deliberate contract mismatch in your local clone:
+
+1. In `openrpc.json`, change the `positive` addition example result from `5` to `6`.
+2. Run `npm run coverage:openrpc`.
+3. Confirm that the command exits nonzero and the reports describe the mismatch,
+   even though `6` still satisfies the integer result schema.
+4. Restore the example result before committing.
+
+Changing multiplication to return a string also fails the schema-based checks.
+These exercises verify that your pipeline rejects both example mismatches and
+invalid result shapes.
+
+For the complete server, tests, runner, and workflow, explore the
+[example repository](https://github.com/zcstarr/example-test-coverage).
